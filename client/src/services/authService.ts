@@ -42,7 +42,7 @@ class AuthService {
   }
 
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
-    const response = await api.post("/login", credentials);
+    const response = await api.post("/auth/login", credentials);
     const authData = response.data;
 
     this.token = authData.access_token;
@@ -54,7 +54,7 @@ class AuthService {
 
   async logout(): Promise<void> {
     try {
-      await api.post("/logout");
+      await api.post("/auth/logout");
     } catch (error) {
       // Continue with logout even if API call fails
     } finally {
@@ -65,12 +65,12 @@ class AuthService {
   }
 
   async getUser(): Promise<User> {
-    const response = await api.get("/me");
+    const response = await api.get("/auth/me");
     return response.data;
   }
 
   async refreshToken(): Promise<AuthResponse> {
-    const response = await api.post("/refresh");
+    const response = await api.post("/auth/refresh");
     const authData = response.data;
 
     this.token = authData.access_token;
@@ -81,7 +81,7 @@ class AuthService {
   }
 
   async updateProfile(profileData: UpdateProfileData): Promise<User> {
-    const response = await api.put("/profile", profileData);
+    const response = await api.put("/auth/profile", profileData);
     return response.data.user;
   }
 
