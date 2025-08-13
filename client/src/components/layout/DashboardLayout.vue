@@ -374,13 +374,13 @@
           <h1 class="text-xl font-semibold text-gray-900">{{ pageTitle }}</h1>
           <div class="flex items-center space-x-4">
             <span class="text-sm text-gray-700"
-              >Welkom {{ user?.name || user?.email }}</span
+              >Welkom {{ fullName || user?.email }}</span
             >
             <div class="relative">
               <button
                 class="flex items-center space-x-2 text-sm font-medium text-white bg-purple-600 px-3 py-2 rounded-md hover:bg-purple-700"
               >
-                <span>{{ user?.name || "De Pan" }}</span>
+                <span>{{ fullName || user?.email || "Gebruiker" }}</span>
                 <svg
                   class="h-4 w-4"
                   fill="none"
@@ -416,6 +416,17 @@ import { authService, type User } from "../../services/authService";
 const route = useRoute();
 
 const user = ref<User | null>(null);
+
+const fullName = computed(() => {
+  if (user.value?.first_name && user.value?.last_name) {
+    return `${user.value.first_name} ${user.value.last_name}`;
+  } else if (user.value?.first_name) {
+    return user.value.first_name;
+  } else if (user.value?.last_name) {
+    return user.value.last_name;
+  }
+  return "";
+});
 
 onMounted(async () => {
   try {

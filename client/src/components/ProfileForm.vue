@@ -280,7 +280,7 @@ const fullName = computed(() => {
   } else if (user.value?.last_name) {
     return user.value.last_name;
   }
-  return user.value?.name || "";
+  return "";
 });
 
 const profileImageSrc = computed(() => {

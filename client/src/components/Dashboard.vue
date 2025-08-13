@@ -17,7 +17,7 @@
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-sm text-gray-700"
-              >Welcome, {{ user?.name || user?.email }}</span
+              >Welcome, {{ fullName || user?.email }}</span
             >
             <button
               @click="handleLogout"
@@ -73,7 +73,7 @@
                     <dd
                       class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2"
                     >
-                      {{ user?.name || "Not provided" }}
+                      {{ fullName || "Not provided" }}
                     </dd>
                   </div>
                   <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
@@ -204,7 +204,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { authService, type User } from "../services/authService";
 
 const emit = defineEmits<{
@@ -215,6 +215,17 @@ const user = ref<User | null>(null);
 const isTestingAPI = ref(false);
 const isRefreshing = ref(false);
 const apiTestResult = ref<{ success: boolean; message: string } | null>(null);
+
+const fullName = computed(() => {
+  if (user.value?.first_name && user.value?.last_name) {
+    return `${user.value.first_name} ${user.value.last_name}`;
+  } else if (user.value?.first_name) {
+    return user.value.first_name;
+  } else if (user.value?.last_name) {
+    return user.value.last_name;
+  }
+  return "";
+});
 
 const handleLogout = async () => {
   await authService.logout();
