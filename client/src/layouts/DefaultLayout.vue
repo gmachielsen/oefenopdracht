@@ -1,11 +1,9 @@
 <template>
   <div class="min-h-screen bg-gray-50 flex">
     <!-- Sidebar for desktop -->
-    <div
-      class="hidden md:block w-64 bg-white shadow-sm border-r border-gray-200"
-    >
+    <div class="hidden md:block w-64 bg-white shadow-sm">
       <!-- Logo/Header -->
-      <div class="p-6 border-b border-gray-200">
+      <div class="p-6">
         <div class="flex items-center space-x-3">
           <div
             class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center"
@@ -92,13 +90,13 @@
     <!-- Mobile sidebar -->
     <div
       :class="[
-        'fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 md:hidden',
+        'fixed inset-y-0 left-0 w-full bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 md:hidden',
         showMobileMenu ? 'translate-x-0' : '-translate-x-full',
       ]"
       data-mobile-menu
     >
       <!-- Mobile Logo/Header -->
-      <div class="p-6 border-b border-gray-200">
+      <div class="p-6">
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div
@@ -202,7 +200,11 @@
       <!-- Top Header -->
       <header class="bg-gray-50">
         <div class="px-6 py-4 flex items-center justify-between">
-          <!-- Mobile: Profile + Hamburger -->
+          <!-- Mobile: Title left, Profile + Hamburger right -->
+          <div class="flex items-center md:hidden">
+            <h1 class="text-xl font-semibold text-gray-900">{{ pageTitle }}</h1>
+          </div>
+
           <div class="flex items-center space-x-4 md:hidden">
             <div class="relative">
               <button @click="toggleDropdown" class="relative">
@@ -217,7 +219,7 @@
               <!-- Mobile Profile Dropdown Menu -->
               <div
                 v-if="showDropdown"
-                class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200"
+                class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200"
                 @click.stop
               >
                 <div class="px-4 py-2 border-b border-gray-100">
@@ -254,7 +256,7 @@
               data-mobile-menu
             >
               <svg
-                class="w-6 h-6"
+                class="w-7 h-7"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -270,7 +272,9 @@
           </div>
 
           <!-- Desktop: Title -->
-          <h1 class="text-xl font-semibold text-gray-900">{{ pageTitle }}</h1>
+          <h1 class="hidden md:block text-xl font-semibold text-gray-900">
+            {{ pageTitle }}
+          </h1>
 
           <!-- Desktop: Welcome + Profile -->
           <div class="hidden md:flex items-center space-x-4">
