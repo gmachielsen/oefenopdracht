@@ -59,145 +59,107 @@ onMounted(() => {
 </script>
 
 <template>
-  <div id="app">
-    <h1>Vue + Laravel App</h1>
+  <div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-4xl font-bold text-gray-900 text-center mb-8">
+        Vue + Laravel App
+      </h1>
 
-    <div class="section">
-      <h2>API Test</h2>
-      <button @click="testConnection" :disabled="loading">
-        {{ loading ? "Testing..." : "Test API Connection" }}
-      </button>
-    </div>
-
-    <div class="section">
-      <h2>Create New Example</h2>
-      <form @submit.prevent="createExample" class="form">
-        <input
-          v-model="newExample.name"
-          type="text"
-          placeholder="Name"
-          required
-        />
-        <input
-          v-model="newExample.email"
-          type="email"
-          placeholder="Email"
-          required
-        />
-        <button type="submit" :disabled="loading">
-          {{ loading ? "Creating..." : "Create Example" }}
+      <!-- API Test Section -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">API Test</h2>
+        <button
+          @click="testConnection"
+          :disabled="loading"
+          class="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-md transition duration-200"
+        >
+          {{ loading ? "Testing..." : "Test API Connection" }}
         </button>
-      </form>
-    </div>
-
-    <div class="section">
-      <h2>Examples</h2>
-      <button @click="loadExamples" :disabled="loading">
-        {{ loading ? "Loading..." : "Reload Examples" }}
-      </button>
-
-      <div v-if="error" class="error">
-        {{ error }}
       </div>
 
-      <div v-if="examples.length === 0 && !loading" class="info">
-        No examples found
+      <!-- Create New Example Section -->
+      <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800 mb-4">
+          Create New Example
+        </h2>
+        <form
+          @submit.prevent="createExample"
+          class="flex flex-col sm:flex-row gap-4"
+        >
+          <input
+            v-model="newExample.name"
+            type="text"
+            placeholder="Name"
+            required
+            class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <input
+            v-model="newExample.email"
+            type="email"
+            placeholder="Email"
+            required
+            class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <button
+            type="submit"
+            :disabled="loading"
+            class="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-medium py-2 px-6 rounded-md transition duration-200 whitespace-nowrap"
+          >
+            {{ loading ? "Creating..." : "Create Example" }}
+          </button>
+        </form>
       </div>
 
-      <div v-for="example in examples" :key="example.id" class="example-card">
-        <h3>{{ example.name }}</h3>
-        <p>{{ example.email }}</p>
-        <small>{{ example.created_at }}</small>
+      <!-- Examples Section -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-semibold text-gray-800">Examples</h2>
+          <button
+            @click="loadExamples"
+            :disabled="loading"
+            class="bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-medium py-2 px-4 rounded-md transition duration-200"
+          >
+            {{ loading ? "Loading..." : "Reload Examples" }}
+          </button>
+        </div>
+
+        <!-- Error Message -->
+        <div
+          v-if="error"
+          class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-md mb-4"
+        >
+          {{ error }}
+        </div>
+
+        <!-- No Examples Message -->
+        <div
+          v-if="examples.length === 0 && !loading"
+          class="bg-gray-50 border border-gray-200 text-gray-600 px-4 py-3 rounded-md text-center"
+        >
+          No examples found
+        </div>
+
+        <!-- Examples List -->
+        <div class="space-y-4">
+          <div
+            v-for="example in examples"
+            :key="example.id"
+            class="bg-gray-50 border border-gray-200 rounded-md p-4 hover:bg-gray-100 transition duration-200"
+          >
+            <h3 class="text-lg font-medium text-gray-900">
+              {{ example.name }}
+            </h3>
+            <p class="text-gray-600 mt-1">{{ example.email }}</p>
+            <small class="text-gray-500 text-sm">{{
+              example.created_at
+            }}</small>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-#app {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-family: Arial, sans-serif;
-}
-
-.section {
-  margin-bottom: 2rem;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
-
-.form {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.form input {
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  flex: 1;
-}
-
-.form button {
-  padding: 0.5rem 1rem;
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.form button:hover:not(:disabled) {
-  background: #0056b3;
-}
-
-.form button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
-
-.example-card {
-  padding: 1rem;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  margin-bottom: 1rem;
-}
-
-.error {
-  color: red;
-  padding: 1rem;
-  background: #fee;
-  border: 1px solid #fcc;
-  border-radius: 4px;
-  margin: 1rem 0;
-}
-
-.info {
-  color: #666;
-  padding: 1rem;
-  background: #f9f9f9;
-  border-radius: 4px;
-}
-
-button {
-  padding: 0.5rem 1rem;
-  background: #28a745;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
-button:hover:not(:disabled) {
-  background: #1e7e34;
-}
-
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
-}
+/* Custom styles can be added here if needed */
 </style>
