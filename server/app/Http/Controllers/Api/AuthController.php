@@ -52,7 +52,7 @@ class AuthController extends Controller
             'last_name' => 'sometimes|string|max:255',
             'email' => 'sometimes|email|unique:users,email,' . $user->id,
             'birth_date' => 'sometimes|date|before:today',
-            'profile_photo' => 'sometimes|string|max:255', // URL to photo
+            'profile_photo' => 'sometimes|string', // Base64 encoded image data
         ]);
 
         $user->update($request->only([

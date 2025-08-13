@@ -85,6 +85,20 @@ class AuthService {
     return response.data.user;
   }
 
+  async uploadProfilePhoto(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64String = reader.result as string;
+        resolve(base64String);
+      };
+      reader.onerror = () => {
+        reject(new Error("Fout bij het lezen van het bestand"));
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   isAuthenticated(): boolean {
     return this.token !== null;
   }

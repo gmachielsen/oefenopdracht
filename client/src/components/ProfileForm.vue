@@ -82,22 +82,80 @@
             <form @submit.prevent="handleSubmit" class="space-y-6">
               <!-- Profile Photo -->
               <div class="flex items-center space-x-6">
-                <div class="shrink-0">
+                <div class="shrink-0 relative group">
                   <img
-                    :src="formData.profile_photo || '/default_avatar.svg'"
+                    :src="profileImageSrc"
                     :alt="fullName"
-                    class="h-16 w-16 object-cover rounded-full border-2 border-gray-300"
+                    class="h-20 w-20 object-cover rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors"
                     @error="handleImageError"
+                    @click="triggerFileUpload"
+                  />
+                  <div
+                    class="absolute inset-0 rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
+                    @click="triggerFileUpload"
+                  >
+                    <svg
+                      class="h-6 w-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                      />
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    ref="fileInput"
+                    type="file"
+                    accept="image/*"
+                    class="hidden"
+                    @change="handleFileUpload"
                   />
                 </div>
                 <div class="flex-1">
-                  <InputField
-                    id="profile_photo"
-                    v-model="formData.profile_photo"
-                    type="url"
-                    label="Profielfoto (URL)"
-                    placeholder="https://example.com/foto.jpg"
-                  />
+                  <h4 class="text-sm font-medium text-gray-700 mb-2">
+                    Profielfoto
+                  </h4>
+                  <p class="text-sm text-gray-500 mb-2">
+                    Klik op de avatar om een nieuwe foto te uploaden
+                  </p>
+                  <div v-if="uploadedFile" class="text-sm text-green-600">
+                    {{ uploadedFile.name }} ({{
+                      formatFileSize(uploadedFile.size)
+                    }})
+                  </div>
+                  <div v-if="isUploading" class="flex items-center space-x-2">
+                    <svg
+                      class="animate-spin h-4 w-4 text-indigo-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        class="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        stroke-width="4"
+                      ></circle>
+                      <path
+                        class="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    <span class="text-sm text-gray-600">Foto uploaden...</span>
+                  </div>
                 </div>
               </div>
 
@@ -234,8 +292,11 @@ const emit = defineEmits<{
 
 const user = ref<User | null>(null);
 const isLoading = ref(false);
+const isUploading = ref(false);
 const successMessage = ref("");
 const errorMessage = ref("");
+const uploadedFile = ref<File | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null);
 
 const formData = ref<UpdateProfileData>({
   first_name: "",
@@ -256,6 +317,13 @@ const fullName = computed(() => {
   return user.value?.name || "";
 });
 
+const profileImageSrc = computed(() => {
+  if (uploadedFile.value) {
+    return URL.createObjectURL(uploadedFile.value);
+  }
+  return formData.value.profile_photo || "/default-avatar.svg";
+});
+
 const formattedBirthDate = computed(() => {
   if (user.value?.birth_date) {
     return new Date(user.value.birth_date).toLocaleDateString("nl-NL");
@@ -270,7 +338,41 @@ const handleLogout = async () => {
 
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement;
-  target.src = "/default_avatar.svg";
+  target.src = "/default-avatar.svg";
+};
+
+const triggerFileUpload = () => {
+  fileInput.value?.click();
+};
+
+const formatFileSize = (bytes: number): string => {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+};
+
+const handleFileUpload = async (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  const file = target.files?.[0];
+
+  if (!file) return;
+
+  // Validate file type
+  if (!file.type.startsWith("image/")) {
+    errorMessage.value = "Alleen afbeeldingsbestanden zijn toegestaan";
+    return;
+  }
+
+  // Validate file size (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    errorMessage.value = "Bestand is te groot. Maximum grootte is 5MB";
+    return;
+  }
+
+  uploadedFile.value = file;
+  clearMessages();
 };
 
 const clearMessages = () => {
@@ -290,6 +392,7 @@ const resetForm = () => {
       profile_photo: user.value.profile_photo || "",
     };
   }
+  uploadedFile.value = null;
   clearMessages();
 };
 
@@ -311,6 +414,24 @@ const handleSubmit = async () => {
   clearMessages();
 
   try {
+    // Handle file upload first if there's a new file
+    if (uploadedFile.value) {
+      isUploading.value = true;
+      try {
+        const base64Data = await authService.uploadProfilePhoto(
+          uploadedFile.value
+        );
+        formData.value.profile_photo = base64Data;
+        uploadedFile.value = null; // Clear the uploaded file
+      } catch (uploadError) {
+        console.error("File upload error:", uploadError);
+        errorMessage.value = "Fout bij het converteren van de foto";
+        return;
+      } finally {
+        isUploading.value = false;
+      }
+    }
+
     // Only send changed fields
     const updateData: UpdateProfileData = {};
 
@@ -333,16 +454,17 @@ const handleSubmit = async () => {
       updateData.profile_photo = formData.value.profile_photo;
     }
 
-    if (Object.keys(updateData).length === 0) {
+    if (Object.keys(updateData).length === 0 && !uploadedFile.value) {
       errorMessage.value = "Geen wijzigingen gedetecteerd";
       return;
     }
 
-    const updatedUser = await authService.updateProfile(updateData);
-    user.value = updatedUser;
-    successMessage.value = "Profiel succesvol bijgewerkt!";
+    if (Object.keys(updateData).length > 0) {
+      const updatedUser = await authService.updateProfile(updateData);
+      user.value = updatedUser;
+    }
 
-    // Auto-hide success message after 3 seconds
+    successMessage.value = "Profiel succesvol bijgewerkt!"; // Auto-hide success message after 3 seconds
     setTimeout(() => {
       successMessage.value = "";
     }, 3000);
