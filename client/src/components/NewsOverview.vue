@@ -10,7 +10,6 @@
             </h1>
           </div>
           <div class="flex items-center space-x-4">
-            <LanguageSwitcher />
             <router-link
               to="/dashboard"
               class="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
@@ -193,7 +192,6 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { newsService, type NewsArticle } from "../services/newsService";
 import { authService } from "../services/authService";
-import LanguageSwitcher from "./LanguageSwitcher.vue";
 
 const router = useRouter();
 

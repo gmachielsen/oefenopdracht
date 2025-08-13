@@ -18,7 +18,6 @@
             </div>
           </div>
           <div class="flex items-center space-x-4">
-            <LanguageSwitcher />
             <span class="text-sm text-gray-700">{{ user?.email }}</span>
             <button
               @click="handleLogout"
@@ -298,7 +297,6 @@ import {
   type UpdateProfileData,
 } from "../services/authService";
 import InputField from "./ui/InputField.vue";
-import LanguageSwitcher from "./LanguageSwitcher.vue";
 
 const emit = defineEmits<{
   logout: [];

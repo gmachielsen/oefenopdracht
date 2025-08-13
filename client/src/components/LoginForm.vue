@@ -2,11 +2,6 @@
   <div
     class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8"
   >
-    <!-- Language Switcher -->
-    <div class="absolute top-4 right-4">
-      <LanguageSwitcher />
-    </div>
-
     <div class="max-w-md w-full space-y-8">
       <!-- Login Card -->
       <div class="bg-white rounded-lg shadow-lg px-8 py-10">
@@ -153,7 +148,6 @@
 import { ref } from "vue";
 import { authService } from "../services/authService";
 import InputField from "./ui/InputField.vue";
-import LanguageSwitcher from "./LanguageSwitcher.vue";
 
 const emit = defineEmits<{
   loginSuccess: [];
