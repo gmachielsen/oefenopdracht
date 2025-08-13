@@ -307,7 +307,7 @@ const handleLogout = async () => {
 
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement;
-  target.src = "/default-avatar.svg";
+  target.src = "/default_avatar.svg";
 };
 
 const clearMessages = () => {
