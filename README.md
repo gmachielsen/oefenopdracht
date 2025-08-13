@@ -27,7 +27,7 @@ pnpm install
 pnpm dev
 ```
 
-De client draait op: http://localhost:5173
+De client draait op: http://localhost:5174
 
 ### Server (Laravel) Setup
 
@@ -37,7 +37,7 @@ composer install
 php artisan serve
 ```
 
-De API draait op: http://localhost:8000
+De API draait op: http://localhost:8001
 
 ## Development
 
@@ -83,7 +83,7 @@ cd client && pnpm dev
 
 ### CORS
 
-De Laravel API is geconfigureerd om requests van `localhost:5173` toe te staan.
+De Laravel API is geconfigureerd om requests van `localhost:5174` toe te staan.
 
 ### Database
 
