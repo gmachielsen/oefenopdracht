@@ -1,7 +1,8 @@
 {
   "nav": {
     "profile": "Profiel",
-    "logout": "Uitloggen"
+    "logout": "Uitloggen",
+    "dashboard": "Dashboard"
   },
   "auth": {
     "welcome": "Welkom bij Oefening",
@@ -9,6 +10,17 @@
     "password": "Wachtwoord",
     "login": "Inloggen",
     "loginError": "Ongeldige inloggegevens"
+  },
+  "news": {
+    "title": "Nieuws",
+    "readMore": "Lees meer",
+    "noNews": "Geen nieuws beschikbaar",
+    "noNewsDescription": "Er zijn momenteel geen nieuwsberichten beschikbaar.",
+    "errorTitle": "Fout bij laden van nieuws",
+    "backToOverview": "Terug naar overzicht",
+    "shareArticle": "Artikel delen",
+    "copyLink": "Link kopiëren",
+    "linkCopied": "Link gekopieerd naar klembord!"
   },
   "profile": {
     "title": "Profiel Gegevens",

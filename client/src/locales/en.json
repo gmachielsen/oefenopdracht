@@ -1,7 +1,8 @@
 {
   "nav": {
     "profile": "Profile",
-    "logout": "Logout"
+    "logout": "Logout",
+    "dashboard": "Dashboard"
   },
   "auth": {
     "welcome": "Welcome to Exercise",
@@ -9,6 +10,17 @@
     "password": "Password",
     "login": "Login",
     "loginError": "Invalid credentials"
+  },
+  "news": {
+    "title": "News",
+    "readMore": "Read more",
+    "noNews": "No news available",
+    "noNewsDescription": "There are currently no news articles available.",
+    "errorTitle": "Error loading news",
+    "backToOverview": "Back to overview",
+    "shareArticle": "Share article",
+    "copyLink": "Copy link",
+    "linkCopied": "Link copied to clipboard!"
   },
   "profile": {
     "title": "Profile Information",

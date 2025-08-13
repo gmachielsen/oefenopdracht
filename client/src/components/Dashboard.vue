@@ -4,8 +4,16 @@
     <nav class="bg-white shadow">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-          <div class="flex items-center">
+          <div class="flex items-center space-x-8">
             <h1 class="text-xl font-semibold text-gray-900">Dashboard</h1>
+            <div class="hidden md:flex space-x-4">
+              <router-link
+                to="/news"
+                class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
+              >
+                Nieuws
+              </router-link>
+            </div>
           </div>
           <div class="flex items-center space-x-4">
             <span class="text-sm text-gray-700"

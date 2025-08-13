@@ -4,6 +4,9 @@ import { authService } from "../services/authService";
 // Import pages
 import LoginPage from "@/views/LoginPage.vue";
 import DashboardPage from "@/views/DashboardPage.vue";
+import NewsOverviewPage from "@/views/NewsOverviewPage.vue";
+import NewsDetailPage from "@/views/NewsDetailPage.vue";
+
 const routes = [
   {
     path: "/login",
@@ -24,15 +27,38 @@ const routes = [
     },
   },
   {
+    path: "/news",
+    name: "News",
+    component: NewsOverviewPage,
+    meta: {
+      layout: "DefaultLayout",
+      requiresAuth: true, // Only accessible when authenticated
+    },
+  },
+  {
+    path: "/news/:id",
+    name: "NewsDetail",
+    component: NewsDetailPage,
+    meta: {
+      layout: "DefaultLayout",
+      requiresAuth: true, // Only accessible when authenticated
+    },
+  },
+  {
     path: "/",
-    redirect: () => {
-      // Redirect to dashboard if authenticated, otherwise to login
-      return authService.isAuthenticated() ? "/dashboard" : "/login";
+    name: "Home",
+    component: DashboardPage,
+    meta: {
+      layout: "DefaultLayout",
+      requiresAuth: true, // Only accessible when authenticated
     },
   },
   {
     path: "/:pathMatch(.*)*",
-    redirect: "/",
+    redirect: () => {
+      // Redirect to home if authenticated, otherwise to login
+      return authService.isAuthenticated() ? "/" : "/login";
+    },
   },
 ];
 
@@ -53,7 +79,7 @@ router.beforeEach(async (to, from, next) => {
 
   // Check if route is only for guests (like login page)
   if (to.meta.requiresGuest && isAuthenticated) {
-    next("/dashboard");
+    next("/");
     return;
   }
 
