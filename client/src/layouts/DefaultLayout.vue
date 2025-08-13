@@ -87,29 +87,53 @@
         <div class="px-6 py-4 flex items-center justify-between">
           <h1 class="text-xl font-semibold text-gray-900">{{ pageTitle }}</h1>
           <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-700"
-              >Welkom {{ fullName || user?.email }}</span
-            >
-            <div class="relative">
-              <button
-                @click="handleLogout"
-                class="flex items-center space-x-2 text-sm font-medium text-white bg-purple-600 px-3 py-2 rounded-md hover:bg-purple-700"
+            <div class="flex items-center space-x-3">
+              <span class="text-sm text-gray-700"
+                >Welkom {{ fullName || user?.email }}</span
               >
-                <span>{{ fullName || user?.email || "Gebruiker" }}</span>
-                <svg
-                  class="h-4 w-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M19 9l-7 7-7-7"
+              <div class="relative">
+                <button @click="toggleDropdown" class="relative">
+                  <img
+                    :src="user?.profile_photo || '/default-avatar.svg'"
+                    :alt="fullName || 'Gebruiker'"
+                    class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors"
+                    @error="handleImageError"
                   />
-                </svg>
-              </button>
+                </button>
+
+                <!-- Dropdown Menu -->
+                <div
+                  v-if="showDropdown"
+                  class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200"
+                  @click.stop
+                >
+                  <div class="px-4 py-2 border-b border-gray-100">
+                    <p class="text-sm font-medium text-gray-900">
+                      {{ fullName || user?.email }}
+                    </p>
+                    <p class="text-xs text-gray-500">{{ user?.email }}</p>
+                  </div>
+                  <button
+                    @click="handleLogout"
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
+                  >
+                    <svg
+                      class="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                      />
+                    </svg>
+                    Uitloggen
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -132,6 +156,7 @@ const route = useRoute();
 const router = useRouter();
 
 const user = ref<User | null>(null);
+const showDropdown = ref(false);
 
 const fullName = computed(() => {
   if (user.value?.first_name && user.value?.last_name) {
@@ -142,14 +167,6 @@ const fullName = computed(() => {
     return user.value.last_name;
   }
   return "";
-});
-
-onMounted(async () => {
-  try {
-    user.value = await authService.getUser();
-  } catch (error) {
-    console.error("Failed to load user:", error);
-  }
 });
 
 const pageTitle = computed(() => {
@@ -170,6 +187,32 @@ const handleLogout = () => {
   authService.logout();
   router.push("/login");
 };
+
+const handleImageError = (event: Event) => {
+  const target = event.target as HTMLImageElement;
+  target.src = "/default-avatar.svg";
+};
+
+const toggleDropdown = () => {
+  showDropdown.value = !showDropdown.value;
+};
+
+// Close dropdown when clicking outside
+onMounted(async () => {
+  try {
+    user.value = await authService.getUser();
+  } catch (error) {
+    console.error("Failed to load user:", error);
+  }
+
+  // Add click outside listener
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element;
+    if (!target.closest(".relative")) {
+      showDropdown.value = false;
+    }
+  });
+});
 </script>
 
 <style scoped>
