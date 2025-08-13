@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "profile": "Profiel",
+    "logout": "Uitloggen"
+  },
+  "auth": {
+    "welcome": "Welkom bij Oefening",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "login": "Inloggen",
+    "loginError": "Ongeldige inloggegevens"
+  },
+  "profile": {
+    "title": "Profiel Gegevens",
+    "currentInfo": "Huidige Profiel Informatie",
+    "photo": {
+      "label": "Profielfoto",
+      "clickToUpload": "Klik op de avatar om een nieuwe foto te uploaden"
+    },
+    "fields": {
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "email": "E-mailadres",
+      "birthDate": "Geboortedatum",
+      "fullName": "Volledige naam"
+    },
+    "placeholders": {
+      "firstName": "Voornaam",
+      "lastName": "Achternaam",
+      "email": "jouw.email.adres"
+    },
+    "buttons": {
+      "reset": "Reset",
+      "save": "Profiel Opslaan",
+      "saving": "Opslaan..."
+    },
+    "messages": {
+      "updateSuccess": "Profiel succesvol bijgewerkt!",
+      "noChanges": "Geen wijzigingen gedetecteerd",
+      "updateError": "Er is een fout opgetreden bij het bijwerken van je profiel",
+      "photoConvertError": "Fout bij het converteren van de foto",
+      "invalidFileType": "Alleen afbeeldingsbestanden zijn toegestaan",
+      "fileTooLarge": "Bestand is te groot. Maximum grootte is 5MB",
+      "uploading": "Foto uploaden..."
+    },
+    "info": {
+      "notFilled": "Niet ingevuld",
+      "accountId": "Account ID"
+    }
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fout",
+    "success": "Succes"
+  }
+}

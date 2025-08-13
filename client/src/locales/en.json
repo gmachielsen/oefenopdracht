@@ -1,0 +1,56 @@
+{
+  "nav": {
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "auth": {
+    "welcome": "Welcome to Exercise",
+    "email": "Email address",
+    "password": "Password",
+    "login": "Login",
+    "loginError": "Invalid credentials"
+  },
+  "profile": {
+    "title": "Profile Information",
+    "currentInfo": "Current Profile Information",
+    "photo": {
+      "label": "Profile Photo",
+      "clickToUpload": "Click on the avatar to upload a new photo"
+    },
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email Address",
+      "birthDate": "Birth Date",
+      "fullName": "Full Name"
+    },
+    "placeholders": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "your.email.address"
+    },
+    "buttons": {
+      "reset": "Reset",
+      "save": "Save Profile",
+      "saving": "Saving..."
+    },
+    "messages": {
+      "updateSuccess": "Profile updated successfully!",
+      "noChanges": "No changes detected",
+      "updateError": "An error occurred while updating your profile",
+      "photoConvertError": "Error converting the photo",
+      "invalidFileType": "Only image files are allowed",
+      "fileTooLarge": "File is too large. Maximum size is 5MB",
+      "uploading": "Uploading photo..."
+    },
+    "info": {
+      "notFilled": "Not filled in",
+      "accountId": "Account ID"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  }
+}

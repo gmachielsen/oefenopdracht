@@ -5,15 +5,18 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
           <div class="flex items-center">
-            <h1 class="text-xl font-semibold text-gray-900">Profiel</h1>
+            <h1 class="text-xl font-semibold text-gray-900">
+              {{ $t("nav.profile") }}
+            </h1>
           </div>
           <div class="flex items-center space-x-4">
+            <LanguageSwitcher />
             <span class="text-sm text-gray-700">{{ user?.email }}</span>
             <button
               @click="handleLogout"
               class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium"
             >
-              Uitloggen
+              {{ $t("nav.logout") }}
             </button>
           </div>
         </div>
@@ -27,7 +30,7 @@
         <div class="bg-white shadow rounded-lg">
           <div class="px-4 py-5 sm:p-6">
             <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">
-              Profiel Gegevens
+              {{ $t("profile.title") }}
             </h3>
 
             <!-- Success/Error Messages -->
@@ -124,10 +127,10 @@
                 </div>
                 <div class="flex-1">
                   <h4 class="text-sm font-medium text-gray-700 mb-2">
-                    Profielfoto
+                    {{ $t("profile.photo.label") }}
                   </h4>
                   <p class="text-sm text-gray-500 mb-2">
-                    Klik op de avatar om een nieuwe foto te uploaden
+                    {{ $t("profile.photo.clickToUpload") }}
                   </p>
                   <div v-if="uploadedFile" class="text-sm text-green-600">
                     {{ uploadedFile.name }} ({{
@@ -154,7 +157,9 @@
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    <span class="text-sm text-gray-600">Foto uploaden...</span>
+                    <span class="text-sm text-gray-600">{{
+                      $t("profile.messages.uploading")
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -165,16 +170,16 @@
                   id="first_name"
                   v-model="formData.first_name"
                   type="text"
-                  label="Voornaam"
-                  placeholder="Voornaam"
+                  :label="$t('profile.fields.firstName')"
+                  :placeholder="$t('profile.placeholders.firstName')"
                 />
 
                 <InputField
                   id="last_name"
                   v-model="formData.last_name"
                   type="text"
-                  label="Achternaam"
-                  placeholder="Achternaam"
+                  :label="$t('profile.fields.lastName')"
+                  :placeholder="$t('profile.placeholders.lastName')"
                 />
               </div>
 
@@ -183,8 +188,8 @@
                 id="email"
                 v-model="formData.email"
                 type="email"
-                label="E-mailadres"
-                placeholder="email@voorbeeld.nl"
+                :label="$t('profile.fields.email')"
+                :placeholder="$t('profile.placeholders.email')"
                 :required="true"
               />
 
@@ -193,7 +198,7 @@
                 id="birth_date"
                 v-model="formData.birth_date"
                 type="date"
-                label="Geboortedatum"
+                :label="$t('profile.fields.birthDate')"
               />
 
               <!-- Submit Button -->
@@ -203,7 +208,7 @@
                   @click="resetForm"
                   class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
-                  Reset
+                  {{ $t("profile.buttons.reset") }}
                 </button>
                 <button
                   type="submit"
@@ -231,9 +236,9 @@
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       ></path>
                     </svg>
-                    Opslaan...
+                    {{ $t("profile.buttons.saving") }}
                   </span>
-                  <span v-else>Profiel Opslaan</span>
+                  <span v-else>{{ $t("profile.buttons.save") }}</span>
                 </button>
               </div>
             </form>
@@ -285,6 +290,7 @@ import {
   type UpdateProfileData,
 } from "../services/authService";
 import InputField from "./ui/InputField.vue";
+import LanguageSwitcher from "./LanguageSwitcher.vue";
 
 const emit = defineEmits<{
   logout: [];

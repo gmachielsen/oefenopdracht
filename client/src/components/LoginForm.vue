@@ -2,15 +2,20 @@
   <div
     class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8"
   >
+    <!-- Language Switcher -->
+    <div class="absolute top-4 right-4">
+      <LanguageSwitcher />
+    </div>
+
     <div class="max-w-md w-full space-y-8">
       <!-- Login Card -->
       <div class="bg-white rounded-lg shadow-lg px-8 py-10">
         <!-- Logo and Header -->
         <div class="text-center mb-8">
           <h1 class="text-2xl font-bold text-gray-900 mb-2">
-            Welkom bij Oefening
+            {{ $t("auth.welcome") }}
           </h1>
-          <p class="text-gray-600 text-sm">Login om verder te gaan</p>
+          <p class="text-gray-600 text-sm">{{ $t("auth.login") }}</p>
         </div>
 
         <!-- Login Form -->
@@ -21,8 +26,8 @@
             v-model="email"
             name="email"
             type="email"
-            label="E-mail"
-            placeholder="E-mailadres"
+            :label="$t('auth.email')"
+            :placeholder="$t('auth.email')"
             autocomplete="email"
             :required="true"
             :error="emailError"
@@ -36,8 +41,8 @@
             v-model="password"
             name="password"
             type="password"
-            label="Wachtwoord"
-            placeholder="Wachtwoord"
+            :label="$t('auth.password')"
+            :placeholder="$t('auth.password')"
             autocomplete="current-password"
             :required="true"
             :error="passwordError"
@@ -126,9 +131,9 @@
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Inloggen...
+                {{ $t("common.loading") }}
               </span>
-              <span v-else>Inloggen</span>
+              <span v-else>{{ $t("auth.login") }}</span>
             </button>
           </div>
         </form>
@@ -148,6 +153,7 @@
 import { ref } from "vue";
 import { authService } from "../services/authService";
 import InputField from "./ui/InputField.vue";
+import LanguageSwitcher from "./LanguageSwitcher.vue";
 
 const emit = defineEmits<{
   loginSuccess: [];
