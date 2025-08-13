@@ -32,7 +32,7 @@
             :class="
               $route.path.startsWith('/news')
                 ? 'bg-gray-100 text-gray-900'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             "
           >
             <svg
@@ -53,12 +53,12 @@
 
           <!-- Profiel -->
           <router-link
-            to="/profile"
+            to="/dashboard"
             class="group flex items-center px-3 py-2 text-sm font-medium rounded-md"
             :class="
-              $route.path === '/profile'
+              $route.path === '/dashboard'
                 ? 'bg-gray-100 text-gray-900'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             "
           >
             <svg
@@ -146,7 +146,7 @@
             :class="
               $route.path.startsWith('/news')
                 ? 'bg-gray-100 text-gray-900'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             "
           >
             <svg
@@ -173,7 +173,7 @@
             :class="
               $route.path === '/profile'
                 ? 'bg-gray-100 text-gray-900'
-                : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             "
           >
             <svg
