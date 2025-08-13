@@ -1,47 +1,32 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import LoginForm from "./components/LoginForm.vue";
-import Dashboard from "./components/Dashboard.vue";
-import { authService } from "./services/authService";
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import AuthLayout from "./layouts/AuthLayout.vue";
+import DefaultLayout from "./layouts/DefaultLayout.vue";
 
-const isAuthenticated = ref(false);
+const route = useRoute();
 
-const handleLoginSuccess = () => {
-  isAuthenticated.value = true;
+// Dynamic component mapping for layouts
+const layoutComponents = {
+  AuthLayout,
+  DefaultLayout,
 };
 
-const handleLogout = () => {
-  isAuthenticated.value = false;
-};
-
-const checkAuthStatus = async () => {
-  try {
-    // Check if we have a valid token by trying to get user data
-    await authService.getUser();
-    isAuthenticated.value = true;
-  } catch (error) {
-    // Token is invalid or expired
-    isAuthenticated.value = false;
-    authService.logout(); // Clean up any invalid tokens
-  }
-};
-
-onMounted(() => {
-  // Check authentication status on app load
-  if (authService.isAuthenticated()) {
-    checkAuthStatus();
-  }
+// Get the current layout component or default to div
+const currentLayout = computed(() => {
+  const layoutName = route.meta.layout as keyof typeof layoutComponents;
+  return layoutComponents[layoutName] || "div";
 });
 </script>
 
 <template>
-  <div id="app">
-    <!-- Show login form if not authenticated -->
-    <LoginForm v-if="!isAuthenticated" @login-success="handleLoginSuccess" />
-
-    <!-- Show dashboard if authenticated -->
-    <Dashboard v-else @logout="handleLogout" />
-  </div>
+  <main>
+    <component :is="currentLayout">
+      <router-view v-slot="{ Component }">
+        <component :is="Component" />
+      </router-view>
+    </component>
+  </main>
 </template>
 
 <style>
@@ -50,8 +35,4 @@ onMounted(() => {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-</style>
-
-<style scoped>
-/* Custom styles can be added here if needed */
 </style>
