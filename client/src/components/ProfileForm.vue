@@ -84,7 +84,7 @@
               <div class="flex items-center space-x-6">
                 <div class="shrink-0">
                   <img
-                    :src="formData.profile_photo || '/default-avatar.svg'"
+                    :src="formData.profile_photo || '/default_avatar.svg'"
                     :alt="fullName"
                     class="h-16 w-16 object-cover rounded-full border-2 border-gray-300"
                     @error="handleImageError"
