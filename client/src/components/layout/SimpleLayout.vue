@@ -126,7 +126,7 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { authService, type User } from "../services/authService";
+import { authService, type User } from "../../services/authService";
 
 const route = useRoute();
 const router = useRouter();

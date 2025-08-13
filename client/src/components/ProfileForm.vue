@@ -1,291 +1,249 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
-    <!-- Navigation -->
-    <nav class="bg-white shadow">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-          <div class="flex items-center space-x-8">
-            <h1 class="text-xl font-semibold text-gray-900">
-              {{ $t("nav.profile") }}
-            </h1>
-            <div class="hidden md:flex space-x-4">
-              <router-link
-                to="/news"
-                class="text-gray-700 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium"
-              >
-                {{ $t("news.title") }}
-              </router-link>
-            </div>
-          </div>
-          <div class="flex items-center space-x-4">
-            <span class="text-sm text-gray-700">{{ user?.email }}</span>
-            <button
-              @click="handleLogout"
-              class="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md text-sm font-medium"
+  <div class="bg-white shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">
+        {{ $t("profile.title") }}
+      </h3>
+
+      <!-- Success/Error Messages -->
+      <div v-if="successMessage" class="mb-4 rounded-md bg-green-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg
+              class="h-5 w-5 text-green-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
             >
-              {{ $t("nav.logout") }}
-            </button>
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-green-800">
+              {{ successMessage }}
+            </p>
           </div>
         </div>
       </div>
-    </nav>
 
-    <!-- Main content -->
-    <main class="max-w-4xl mx-auto py-6 sm:px-6 lg:px-8">
-      <div class="px-4 py-6 sm:px-0">
-        <!-- Profile Form -->
-        <div class="bg-white shadow rounded-lg">
-          <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-6">
-              {{ $t("profile.title") }}
-            </h3>
-
-            <!-- Success/Error Messages -->
-            <div v-if="successMessage" class="mb-4 rounded-md bg-green-50 p-4">
-              <div class="flex">
-                <div class="flex-shrink-0">
-                  <svg
-                    class="h-5 w-5 text-green-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div class="ml-3">
-                  <p class="text-sm font-medium text-green-800">
-                    {{ successMessage }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div v-if="errorMessage" class="mb-4 rounded-md bg-red-50 p-4">
-              <div class="flex">
-                <div class="flex-shrink-0">
-                  <svg
-                    class="h-5 w-5 text-red-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                      clip-rule="evenodd"
-                    />
-                  </svg>
-                </div>
-                <div class="ml-3">
-                  <p class="text-sm font-medium text-red-800">
-                    {{ errorMessage }}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <form @submit.prevent="handleSubmit" class="space-y-6">
-              <!-- Profile Photo -->
-              <div class="flex items-center space-x-6">
-                <div class="shrink-0 relative group">
-                  <img
-                    :src="profileImageSrc"
-                    :alt="fullName"
-                    class="h-20 w-20 object-cover rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors"
-                    @error="handleImageError"
-                    @click="triggerFileUpload"
-                  />
-                  <div
-                    class="absolute inset-0 rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
-                    @click="triggerFileUpload"
-                  >
-                    <svg
-                      class="h-6 w-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                      />
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                  </div>
-                  <input
-                    ref="fileInput"
-                    type="file"
-                    accept="image/*"
-                    class="hidden"
-                    @change="handleFileUpload"
-                  />
-                </div>
-                <div class="flex-1">
-                  <h4 class="text-sm font-medium text-gray-700 mb-2">
-                    {{ $t("profile.photo.label") }}
-                  </h4>
-                  <p class="text-sm text-gray-500 mb-2">
-                    {{ $t("profile.photo.clickToUpload") }}
-                  </p>
-                  <div v-if="uploadedFile" class="text-sm text-green-600">
-                    {{ uploadedFile.name }} ({{
-                      formatFileSize(uploadedFile.size)
-                    }})
-                  </div>
-                  <div v-if="isUploading" class="flex items-center space-x-2">
-                    <svg
-                      class="animate-spin h-4 w-4 text-indigo-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        stroke-width="4"
-                      ></circle>
-                      <path
-                        class="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    <span class="text-sm text-gray-600">{{
-                      $t("profile.messages.uploading")
-                    }}</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Name Fields -->
-              <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <InputField
-                  id="first_name"
-                  v-model="formData.first_name"
-                  type="text"
-                  :label="$t('profile.fields.firstName')"
-                  :placeholder="$t('profile.placeholders.firstName')"
-                />
-
-                <InputField
-                  id="last_name"
-                  v-model="formData.last_name"
-                  type="text"
-                  :label="$t('profile.fields.lastName')"
-                  :placeholder="$t('profile.placeholders.lastName')"
-                />
-              </div>
-
-              <!-- Email -->
-              <InputField
-                id="email"
-                v-model="formData.email"
-                type="email"
-                :label="$t('profile.fields.email')"
-                :placeholder="$t('profile.placeholders.email')"
-                :required="true"
+      <div v-if="errorMessage" class="mb-4 rounded-md bg-red-50 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg
+              class="h-5 w-5 text-red-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clip-rule="evenodd"
               />
-
-              <!-- Birth Date -->
-              <InputField
-                id="birth_date"
-                v-model="formData.birth_date"
-                type="date"
-                :label="$t('profile.fields.birthDate')"
-              />
-
-              <!-- Submit Button -->
-              <div class="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  @click="resetForm"
-                  class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                  {{ $t("profile.buttons.reset") }}
-                </button>
-                <button
-                  type="submit"
-                  :disabled="isLoading"
-                  class="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <span v-if="isLoading" class="flex items-center">
-                    <svg
-                      class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        stroke-width="4"
-                      ></circle>
-                      <path
-                        class="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      ></path>
-                    </svg>
-                    {{ $t("profile.buttons.saving") }}
-                  </span>
-                  <span v-else>{{ $t("profile.buttons.save") }}</span>
-                </button>
-              </div>
-            </form>
+            </svg>
           </div>
-        </div>
-
-        <!-- Current Profile Info -->
-        <div class="mt-8 bg-white shadow rounded-lg">
-          <div class="px-4 py-5 sm:p-6">
-            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
-              Huidige Profiel Informatie
-            </h3>
-            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
-              <div>
-                <dt class="text-sm font-medium text-gray-500">
-                  Volledige naam
-                </dt>
-                <dd class="mt-1 text-sm text-gray-900">
-                  {{ fullName || "Niet ingevuld" }}
-                </dd>
-              </div>
-              <div>
-                <dt class="text-sm font-medium text-gray-500">E-mail</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ user?.email }}</dd>
-              </div>
-              <div>
-                <dt class="text-sm font-medium text-gray-500">Geboortedatum</dt>
-                <dd class="mt-1 text-sm text-gray-900">
-                  {{ formattedBirthDate || "Niet ingevuld" }}
-                </dd>
-              </div>
-              <div>
-                <dt class="text-sm font-medium text-gray-500">Account ID</dt>
-                <dd class="mt-1 text-sm text-gray-900">{{ user?.id }}</dd>
-              </div>
-            </dl>
+          <div class="ml-3">
+            <p class="text-sm font-medium text-red-800">
+              {{ errorMessage }}
+            </p>
           </div>
         </div>
       </div>
-    </main>
+
+      <form @submit.prevent="handleSubmit" class="space-y-6">
+        <!-- Profile Photo -->
+        <div class="flex items-center space-x-6">
+          <div class="shrink-0 relative group">
+            <img
+              :src="profileImageSrc"
+              :alt="fullName"
+              class="h-20 w-20 object-cover rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors"
+              @error="handleImageError"
+              @click="triggerFileUpload"
+            />
+            <div
+              class="absolute inset-0 rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
+              @click="triggerFileUpload"
+            >
+              <svg
+                class="h-6 w-6 text-white"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </div>
+            <input
+              ref="fileInput"
+              type="file"
+              accept="image/*"
+              class="hidden"
+              @change="handleFileUpload"
+            />
+          </div>
+          <div class="flex-1">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">
+              {{ $t("profile.photo.label") }}
+            </h4>
+            <p class="text-sm text-gray-500 mb-2">
+              {{ $t("profile.photo.clickToUpload") }}
+            </p>
+            <div v-if="uploadedFile" class="text-sm text-green-600">
+              {{ uploadedFile.name }} ({{ formatFileSize(uploadedFile.size) }})
+            </div>
+            <div v-if="isUploading" class="flex items-center space-x-2">
+              <svg
+                class="animate-spin h-4 w-4 text-indigo-500"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              <span class="text-sm text-gray-600">{{
+                $t("profile.messages.uploading")
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Name Fields -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <InputField
+            id="first_name"
+            v-model="formData.first_name"
+            type="text"
+            :label="$t('profile.fields.firstName')"
+            :placeholder="$t('profile.placeholders.firstName')"
+          />
+
+          <InputField
+            id="last_name"
+            v-model="formData.last_name"
+            type="text"
+            :label="$t('profile.fields.lastName')"
+            :placeholder="$t('profile.placeholders.lastName')"
+          />
+        </div>
+
+        <!-- Email -->
+        <InputField
+          id="email"
+          v-model="formData.email"
+          type="email"
+          :label="$t('profile.fields.email')"
+          :placeholder="$t('profile.placeholders.email')"
+          :required="true"
+        />
+
+        <!-- Birth Date -->
+        <InputField
+          id="birth_date"
+          v-model="formData.birth_date"
+          type="date"
+          :label="$t('profile.fields.birthDate')"
+        />
+
+        <!-- Submit Button -->
+        <div class="flex justify-end space-x-3">
+          <button
+            type="button"
+            @click="resetForm"
+            class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            {{ $t("profile.buttons.reset") }}
+          </button>
+          <button
+            type="submit"
+            :disabled="isLoading"
+            class="bg-indigo-600 py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <span v-if="isLoading" class="flex items-center">
+              <svg
+                class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  class="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  stroke-width="4"
+                ></circle>
+                <path
+                  class="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              {{ $t("profile.buttons.saving") }}
+            </span>
+            <span v-else>{{ $t("profile.buttons.save") }}</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Current Profile Info -->
+  <div class="mt-8 bg-white shadow rounded-lg">
+    <div class="px-4 py-5 sm:p-6">
+      <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
+        Huidige Profiel Informatie
+      </h3>
+      <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Volledige naam</dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            {{ fullName || "Niet ingevuld" }}
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">E-mail</dt>
+          <dd class="mt-1 text-sm text-gray-900">{{ user?.email }}</dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Geboortedatum</dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            {{ formattedBirthDate || "Niet ingevuld" }}
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm font-medium text-gray-500">Account ID</dt>
+          <dd class="mt-1 text-sm text-gray-900">{{ user?.id }}</dd>
+        </div>
+      </dl>
+    </div>
   </div>
 </template>
 
@@ -297,10 +255,6 @@ import {
   type UpdateProfileData,
 } from "../services/authService";
 import InputField from "./ui/InputField.vue";
-
-const emit = defineEmits<{
-  logout: [];
-}>();
 
 const user = ref<User | null>(null);
 const isLoading = ref(false);
@@ -342,11 +296,6 @@ const formattedBirthDate = computed(() => {
   }
   return null;
 });
-
-const handleLogout = async () => {
-  await authService.logout();
-  emit("logout");
-};
 
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement;
@@ -504,7 +453,7 @@ onMounted(async () => {
     resetForm();
   } catch (error) {
     console.error("Failed to load user data:", error);
-    emit("logout");
+    // Redirect will be handled by the layout
   }
 });
 </script>
