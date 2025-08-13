@@ -91,17 +91,11 @@
                   />
                 </div>
                 <div class="flex-1">
-                  <label
-                    for="profile_photo"
-                    class="block text-sm font-medium text-gray-700"
-                  >
-                    Profielfoto (URL)
-                  </label>
-                  <input
+                  <InputField
                     id="profile_photo"
                     v-model="formData.profile_photo"
                     type="url"
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                    label="Profielfoto (URL)"
                     placeholder="https://example.com/foto.jpg"
                   />
                 </div>
@@ -109,72 +103,40 @@
 
               <!-- Name Fields -->
               <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div>
-                  <label
-                    for="first_name"
-                    class="block text-sm font-medium text-gray-700"
-                  >
-                    Voornaam
-                  </label>
-                  <input
-                    id="first_name"
-                    v-model="formData.first_name"
-                    type="text"
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Voornaam"
-                  />
-                </div>
+                <InputField
+                  id="first_name"
+                  v-model="formData.first_name"
+                  type="text"
+                  label="Voornaam"
+                  placeholder="Voornaam"
+                />
 
-                <div>
-                  <label
-                    for="last_name"
-                    class="block text-sm font-medium text-gray-700"
-                  >
-                    Achternaam
-                  </label>
-                  <input
-                    id="last_name"
-                    v-model="formData.last_name"
-                    type="text"
-                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                    placeholder="Achternaam"
-                  />
-                </div>
+                <InputField
+                  id="last_name"
+                  v-model="formData.last_name"
+                  type="text"
+                  label="Achternaam"
+                  placeholder="Achternaam"
+                />
               </div>
 
               <!-- Email -->
-              <div>
-                <label
-                  for="email"
-                  class="block text-sm font-medium text-gray-700"
-                >
-                  E-mailadres
-                </label>
-                <input
-                  id="email"
-                  v-model="formData.email"
-                  type="email"
-                  required
-                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="email@voorbeeld.nl"
-                />
-              </div>
+              <InputField
+                id="email"
+                v-model="formData.email"
+                type="email"
+                label="E-mailadres"
+                placeholder="email@voorbeeld.nl"
+                :required="true"
+              />
 
               <!-- Birth Date -->
-              <div>
-                <label
-                  for="birth_date"
-                  class="block text-sm font-medium text-gray-700"
-                >
-                  Geboortedatum
-                </label>
-                <input
-                  id="birth_date"
-                  v-model="formData.birth_date"
-                  type="date"
-                  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                />
-              </div>
+              <InputField
+                id="birth_date"
+                v-model="formData.birth_date"
+                type="date"
+                label="Geboortedatum"
+              />
 
               <!-- Submit Button -->
               <div class="flex justify-end space-x-3">
@@ -264,6 +226,7 @@ import {
   type User,
   type UpdateProfileData,
 } from "../services/authService";
+import InputField from "./ui/InputField.vue";
 
 const emit = defineEmits<{
   logout: [];

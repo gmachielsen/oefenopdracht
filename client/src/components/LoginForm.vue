@@ -16,52 +16,34 @@
         <!-- Login Form -->
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Email Field -->
-          <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-gray-700 mb-2"
-            >
-              E-mail
-            </label>
-            <input
-              id="email"
-              v-model="email"
-              name="email"
-              type="email"
-              autocomplete="email"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
-              :class="{ 'border-red-300 focus:ring-red-500': emailError }"
-              placeholder="E-mailadres"
-            />
-            <p v-if="emailError" class="mt-1 text-sm text-red-600">
-              {{ emailError }}
-            </p>
-          </div>
+          <InputField
+            id="email"
+            v-model="email"
+            name="email"
+            type="email"
+            label="E-mail"
+            placeholder="E-mailadres"
+            autocomplete="email"
+            :required="true"
+            :error="emailError"
+            variant="login"
+            label-class="mb-2"
+          />
 
           <!-- Password Field -->
-          <div>
-            <label
-              for="password"
-              class="block text-sm font-medium text-gray-700 mb-2"
-            >
-              Wachtwoord
-            </label>
-            <input
-              id="password"
-              v-model="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors"
-              :class="{ 'border-red-300 focus:ring-red-500': passwordError }"
-              placeholder="Wachtwoord"
-            />
-            <p v-if="passwordError" class="mt-1 text-sm text-red-600">
-              {{ passwordError }}
-            </p>
-          </div>
+          <InputField
+            id="password"
+            v-model="password"
+            name="password"
+            type="password"
+            label="Wachtwoord"
+            placeholder="Wachtwoord"
+            autocomplete="current-password"
+            :required="true"
+            :error="passwordError"
+            variant="login"
+            label-class="mb-2"
+          />
 
           <!-- Remember me and Forgot password -->
           <div class="flex items-center justify-between">
@@ -165,6 +147,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { authService } from "../services/authService";
+import InputField from "./ui/InputField.vue";
 
 const emit = defineEmits<{
   loginSuccess: [];
