@@ -1,12 +1,12 @@
 <template>
   <div class="dashboard-page">
-    <Dashboard @logout="handleLogout" />
+    <ProfileForm @logout="handleLogout" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import Dashboard from "../components/Dashboard.vue";
+import ProfileForm from "../components/ProfileForm.vue";
 
 const router = useRouter();
 

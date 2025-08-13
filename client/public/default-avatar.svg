@@ -1,0 +1,6 @@
+<!-- Default avatar SVG placeholder -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="32" fill="#E5E7EB"/>
+  <path d="M32 20C35.866 20 39 23.134 39 27C39 30.866 35.866 34 32 34C28.134 34 25 30.866 25 27C25 23.134 28.134 20 32 20Z" fill="#9CA3AF"/>
+  <path d="M50 52C50 45.373 43.627 40 37 40H27C20.373 40 14 45.373 14 52H50Z" fill="#9CA3AF"/>
+</svg>

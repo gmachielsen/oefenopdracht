@@ -8,8 +8,20 @@ export interface LoginCredentials {
 export interface User {
   id: number;
   name: string;
+  first_name: string | null;
+  last_name: string | null;
   email: string;
   email_verified_at: string | null;
+  birth_date: string | null;
+  profile_photo: string | null;
+}
+
+export interface UpdateProfileData {
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  birth_date?: string;
+  profile_photo?: string;
 }
 
 export interface AuthResponse {
@@ -66,6 +78,11 @@ class AuthService {
     this.setAuthHeader();
 
     return authData;
+  }
+
+  async updateProfile(profileData: UpdateProfileData): Promise<User> {
+    const response = await api.put("/profile", profileData);
+    return response.data.user;
   }
 
   isAuthenticated(): boolean {

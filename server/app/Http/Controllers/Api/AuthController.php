@@ -43,6 +43,32 @@ class AuthController extends Controller
         return $this->respondWithToken(auth('api')->refresh());
     }
 
+    public function updateProfile(Request $request)
+    {
+        $user = auth('api')->user();
+
+        $request->validate([
+            'first_name' => 'sometimes|string|max:255',
+            'last_name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|email|unique:users,email,' . $user->id,
+            'birth_date' => 'sometimes|date|before:today',
+            'profile_photo' => 'sometimes|string|max:255', // URL to photo
+        ]);
+
+        $user->update($request->only([
+            'first_name',
+            'last_name', 
+            'email',
+            'birth_date',
+            'profile_photo'
+        ]));
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user
+        ]);
+    }
+
     protected function respondWithToken($token)
     {
         return response()->json([
