@@ -46,18 +46,16 @@ const routes = [
   },
   {
     path: "/",
-    name: "Home",
-    component: DashboardPage,
-    meta: {
-      layout: "DefaultLayout",
-      requiresAuth: true, // Only accessible when authenticated
+    redirect: () => {
+      // Redirect to dashboard if authenticated, otherwise to login
+      return authService.isAuthenticated() ? "/dashboard" : "/login";
     },
   },
   {
     path: "/:pathMatch(.*)*",
     redirect: () => {
-      // Redirect to home if authenticated, otherwise to login
-      return authService.isAuthenticated() ? "/" : "/login";
+      // Redirect to dashboard if authenticated, otherwise to login
+      return authService.isAuthenticated() ? "/dashboard" : "/login";
     },
   },
 ];
@@ -79,7 +77,7 @@ router.beforeEach(async (to, from, next) => {
 
   // Check if route is only for guests (like login page)
   if (to.meta.requiresGuest && isAuthenticated) {
-    next("/");
+    next("/dashboard");
     return;
   }
 

@@ -28,7 +28,7 @@
           <div class="flex items-center space-x-4">
             <LanguageSwitcher />
             <router-link
-              to="/"
+              to="/dashboard"
               class="text-indigo-600 hover:text-indigo-500 text-sm font-medium"
             >
               {{ $t("nav.dashboard") }}
