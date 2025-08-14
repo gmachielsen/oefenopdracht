@@ -71,11 +71,11 @@ cd client && pnpm dev
 
 #### Authentication
 
-- `POST /api/login` - User authentication
-- `POST /api/logout` - User logout
-- `POST /api/refresh` - Refresh JWT token
-- `GET /api/user` - Get authenticated user profile
-- `PUT /api/user` - Update user profile
+- `POST /api/auth/login` - User authentication
+- `POST /api/auth/logout` - User logout
+- `POST /api/auth/refresh` - Refresh JWT token
+- `GET /api/auth/me` - Get authenticated user profile
+- `PUT /api/auth/profile` - Update user profile
 
 #### News
 
@@ -126,6 +126,67 @@ After seeding, you can login with:
 
 - **Email:** test@golfspot.io
 - **Password:** wachtwoord123
+
+## Testing
+
+The application includes comprehensive tests for login functionality.
+
+### Running Tests
+
+```bash
+cd server
+
+# Run all tests
+php artisan test
+
+# Run only login tests
+php artisan test --filter LoginTest
+
+# Run tests with coverage
+php artisan test --coverage
+```
+
+### Test Coverage
+
+The login tests cover:
+
+- ✅ Successful login with valid credentials
+- ✅ Failed login with invalid email
+- ✅ Failed login with invalid password
+- ✅ Login validation (required fields)
+- ✅ Email format validation
+- ✅ Login returns correct user data and JWT token
+
+The application includes comprehensive tests for authentication functionality.
+
+### Running Tests
+
+```bash
+cd server
+
+# Run all tests
+php artisan test
+
+# Run only authentication tests
+php artisan test --filter AuthenticationTest
+
+# Run tests with coverage
+php artisan test --coverage
+```
+
+### Test Coverage
+
+The authentication tests cover:
+
+- ✅ Successful login with valid credentials
+- ✅ Failed login with invalid email
+- ✅ Failed login with invalid password
+- ✅ Login validation (required fields)
+- ✅ Email format validation
+- ✅ Logout functionality
+- ✅ Token refresh functionality
+- ✅ Profile access with authentication
+- ✅ JWT token expiration handling
 
 ## Configuration
 
