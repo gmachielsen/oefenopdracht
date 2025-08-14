@@ -2,10 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import { authService } from "../services/authService";
 
 // Import pages
-import LoginPage from "@/views/LoginPage.vue";
-import DashboardPage from "@/views/DashboardPage.vue";
-import NewsOverviewPage from "@/views/NewsOverviewPage.vue";
-import NewsDetailPage from "@/views/NewsDetailPage.vue";
+import {
+  LoginPage,
+  DashboardPage,
+  NewsOverviewPage,
+  NewsDetailPage,
+} from "@/views";
 
 const routes = [
   {
