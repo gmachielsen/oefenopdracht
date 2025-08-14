@@ -136,7 +136,7 @@
         <!-- Test credentials hint -->
         <div class="mt-6 text-center">
           <p class="text-xs text-gray-500">
-            {{ $t("auth.testCredentials") }}
+            {{ testCredentialsText }}
           </p>
         </div>
       </div>
@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { authService } from "../services/authService";
 import InputField from "./ui/InputField.vue";
@@ -162,6 +162,10 @@ const isLoading = ref(false);
 const errorMessage = ref("");
 const emailError = ref("");
 const passwordError = ref("");
+
+const testCredentialsText = computed(() => {
+  return t("auth.testCredentials").replace("{at}", "@");
+});
 
 const clearErrors = () => {
   errorMessage.value = "";

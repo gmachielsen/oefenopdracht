@@ -1,8 +1,20 @@
 {
   "nav": {
+    "news": "Nieuws",
     "profile": "Profiel",
+    "dashboard": "Dashboard",
     "logout": "Uitloggen",
-    "dashboard": "Dashboard"
+    "welcome": "Welkom",
+    "user": "Gebruiker"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "profile": "Profiel",
+    "news": "Nieuws",
+    "newsDetail": "Nieuws Detail"
+  },
+  "brand": {
+    "name": "Golfclub"
   },
   "auth": {
     "welcome": "Welkom bij Golfclub",
@@ -13,7 +25,7 @@
     "loginFailed": "Inloggen mislukt",
     "rememberMe": "Onthoud mijn gegevens",
     "forgotPassword": "Wachtwoord vergeten?",
-    "testCredentials": "Test met: test@golfspot.io / wachtwoord123",
+    "testCredentials": "Test met: test{at}golfspot.io / wachtwoord123",
     "validation": {
       "emailRequired": "E-mail is verplicht",
       "emailInvalid": "Voer een geldig e-mailadres in",

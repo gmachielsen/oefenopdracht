@@ -18,7 +18,9 @@
               />
             </svg>
           </div>
-          <div class="text-sm font-medium text-gray-900">Golfclub</div>
+          <div class="text-sm font-medium text-gray-900">
+            {{ t("brand.name") }}
+          </div>
         </div>
       </div>
 
@@ -48,7 +50,7 @@
                 d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
               />
             </svg>
-            Nieuws
+            {{ t("nav.news") }}
           </router-link>
 
           <!-- Profiel -->
@@ -74,7 +76,7 @@
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               />
             </svg>
-            Profiel
+            {{ t("nav.profile") }}
           </router-link>
         </div>
       </nav>
@@ -112,7 +114,9 @@
                 />
               </svg>
             </div>
-            <div class="text-sm font-medium text-gray-900">Golfclub</div>
+            <div class="text-sm font-medium text-gray-900">
+              {{ t("brand.name") }}
+            </div>
           </div>
           <button
             @click="toggleMobileMenu"
@@ -162,7 +166,7 @@
                 d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
               />
             </svg>
-            Nieuws
+            {{ t("nav.news") }}
           </router-link>
 
           <!-- Profiel -->
@@ -189,7 +193,7 @@
                 d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
               />
             </svg>
-            Profiel
+            {{ t("nav.profile") }}
           </router-link>
         </div>
       </nav>
@@ -214,7 +218,7 @@
                 >
                   <img
                     :src="user.profile_photo"
-                    :alt="fullName || 'Gebruiker'"
+                    :alt="fullName || t('nav.user')"
                     class="h-full w-full object-cover"
                     loading="eager"
                     @error="handleImageError"
@@ -268,7 +272,7 @@
                       d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                     />
                   </svg>
-                  Uitloggen
+                  {{ t("nav.logout") }}
                 </button>
               </div>
             </div>
@@ -303,7 +307,7 @@
           <div class="hidden md:flex items-center space-x-4">
             <div class="flex items-center space-x-3">
               <span class="text-sm text-gray-700"
-                >Welkom {{ fullName || user?.email }}</span
+                >{{ t("nav.welcome") }} {{ fullName || user?.email }}</span
               >
               <div class="relative">
                 <button @click="toggleDropdown" class="relative">
@@ -313,7 +317,7 @@
                   >
                     <img
                       :src="user.profile_photo"
-                      :alt="fullName || 'Gebruiker'"
+                      :alt="fullName || t('nav.user')"
                       class="h-full w-full object-cover"
                       loading="eager"
                       @error="handleImageError"
@@ -367,7 +371,7 @@
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                       />
                     </svg>
-                    Uitloggen
+                    {{ t("nav.logout") }}
                   </button>
                 </div>
               </div>
@@ -387,8 +391,10 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { authService, type User } from "../services/authService";
 
+const { t } = useI18n();
 const route = useRoute();
 const router = useRouter();
 
@@ -410,14 +416,14 @@ const fullName = computed(() => {
 const pageTitle = computed(() => {
   switch (route.path) {
     case "/profile":
-      return "Profiel";
+      return t("pages.profile");
     case "/news":
-      return "Nieuws";
+      return t("pages.news");
     default:
       if (route.path.startsWith("/news/")) {
-        return "Nieuws Detail";
+        return t("pages.newsDetail");
       }
-      return "Dashboard";
+      return t("pages.dashboard");
   }
 });
 

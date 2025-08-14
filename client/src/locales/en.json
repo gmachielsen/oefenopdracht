@@ -1,8 +1,20 @@
 {
   "nav": {
+    "news": "News",
     "profile": "Profile",
+    "dashboard": "Dashboard",
     "logout": "Logout",
-    "dashboard": "Dashboard"
+    "welcome": "Welcome",
+    "user": "User"
+  },
+  "pages": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "news": "News",
+    "newsDetail": "News Detail"
+  },
+  "brand": {
+    "name": "Golfclub"
   },
   "auth": {
     "welcome": "Welcome to Golfclub",
@@ -13,7 +25,7 @@
     "loginFailed": "Login failed",
     "rememberMe": "Remember my credentials",
     "forgotPassword": "Forgot password?",
-    "testCredentials": "Test with: test@golfspot.io / wachtwoord123",
+    "testCredentials": "Test with: test{at}golfspot.io / wachtwoord123",
     "validation": {
       "emailRequired": "Email is required",
       "emailInvalid": "Please enter a valid email address",
