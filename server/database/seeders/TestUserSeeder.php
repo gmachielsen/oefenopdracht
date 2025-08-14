@@ -17,7 +17,6 @@ class TestUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'test@golfspot.io'],
             [
-                'name' => 'Test User',
                 'email' => 'test@golfspot.io',
                 'password' => Hash::make('wachtwoord123'),
                 'email_verified_at' => now(),

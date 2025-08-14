@@ -208,12 +208,34 @@
           <div class="flex items-center space-x-4 md:hidden">
             <div class="relative">
               <button @click="toggleDropdown" class="relative">
-                <img
-                  :src="user?.profile_photo || '/default-avatar.svg'"
-                  :alt="fullName || 'Gebruiker'"
-                  class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors"
-                  @error="handleImageError"
-                />
+                <div
+                  v-if="user?.profile_photo && user.profile_photo.trim()"
+                  class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors overflow-hidden"
+                >
+                  <img
+                    :src="user.profile_photo"
+                    :alt="fullName || 'Gebruiker'"
+                    class="h-full w-full object-cover"
+                    loading="eager"
+                    @error="handleImageError"
+                  />
+                </div>
+                <div
+                  v-else
+                  class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors bg-gray-200 flex items-center justify-center"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-500"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                      clip-rule="evenodd"
+                    />
+                  </svg>
+                </div>
               </button>
 
               <!-- Mobile Profile Dropdown Menu -->
@@ -284,12 +306,34 @@
               >
               <div class="relative">
                 <button @click="toggleDropdown" class="relative">
-                  <img
-                    :src="user?.profile_photo || '/default-avatar.svg'"
-                    :alt="fullName || 'Gebruiker'"
-                    class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors"
-                    @error="handleImageError"
-                  />
+                  <div
+                    v-if="user?.profile_photo && user.profile_photo.trim()"
+                    class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors overflow-hidden"
+                  >
+                    <img
+                      :src="user.profile_photo"
+                      :alt="fullName || 'Gebruiker'"
+                      class="h-full w-full object-cover"
+                      loading="eager"
+                      @error="handleImageError"
+                    />
+                  </div>
+                  <div
+                    v-else
+                    class="h-8 w-8 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer transition-colors bg-gray-200 flex items-center justify-center"
+                  >
+                    <svg
+                      class="h-5 w-5 text-gray-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
                 </button>
 
                 <!-- Desktop Profile Dropdown Menu -->
@@ -381,8 +425,10 @@ const handleLogout = () => {
 };
 
 const handleImageError = (event: Event) => {
-  const target = event.target as HTMLImageElement;
-  target.src = "/default-avatar.svg";
+  // Clear the profile photo so the SVG fallback is shown
+  if (user.value) {
+    user.value.profile_photo = "";
+  }
 };
 
 const toggleDropdown = () => {
@@ -391,6 +437,15 @@ const toggleDropdown = () => {
 
 const toggleMobileMenu = () => {
   showMobileMenu.value = !showMobileMenu.value;
+};
+
+// Listen for profile updates
+const handleProfileUpdate = async () => {
+  try {
+    user.value = await authService.getUser();
+  } catch (error) {
+    console.error("Failed to refresh user data:", error);
+  }
 };
 
 // Close dropdown when clicking outside
@@ -413,22 +468,13 @@ onMounted(async () => {
     }
   });
 
-  // Listen for profile updates
-  const handleProfileUpdate = async () => {
-    try {
-      user.value = await authService.getUser();
-    } catch (error) {
-      console.error("Failed to refresh user data:", error);
-    }
-  };
-
   // Add event listener for profile updates
   window.addEventListener("profile-updated", handleProfileUpdate);
+});
 
-  // Cleanup on unmount
-  onUnmounted(() => {
-    window.removeEventListener("profile-updated", handleProfileUpdate);
-  });
+// Cleanup on unmount
+onUnmounted(() => {
+  window.removeEventListener("profile-updated", handleProfileUpdate);
 });
 </script>
 

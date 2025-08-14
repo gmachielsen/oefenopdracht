@@ -57,37 +57,84 @@
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <!-- Profile Photo -->
         <div class="flex items-center space-x-6">
-          <div class="shrink-0 relative group">
-            <img
-              :src="profileImageSrc"
-              :alt="fullName"
-              class="h-20 w-20 object-cover rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors"
-              @error="handleImageError"
-              @click="triggerFileUpload"
-            />
+          <div class="shrink-0 relative">
+            <!-- When there is a profile photo -->
             <div
-              class="absolute inset-0 rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
+              v-if="profileImageSrc"
+              class="h-20 w-20 rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors overflow-hidden relative group"
+              @click="triggerFileUpload"
+            >
+              <img
+                :src="profileImageSrc"
+                :alt="fullName"
+                class="h-full w-full object-cover"
+                loading="eager"
+                @error="handleImageError"
+              />
+              <div
+                class="absolute inset-0 rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
+              >
+                <svg
+                  class="h-6 w-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <!-- When there is no profile photo (fallback) -->
+            <div
+              v-else
+              class="h-20 w-20 rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors bg-gray-200 flex items-center justify-center relative group"
               @click="triggerFileUpload"
             >
               <svg
-                class="h-6 w-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+                class="h-12 w-12 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                />
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                  fill-rule="evenodd"
+                  d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                  clip-rule="evenodd"
                 />
               </svg>
+              <div
+                class="absolute inset-0 rounded-full bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer flex items-center justify-center"
+              >
+                <svg
+                  class="h-6 w-6 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </div>
             </div>
             <input
               ref="fileInput"
@@ -287,7 +334,11 @@ const profileImageSrc = computed(() => {
   if (uploadedFile.value) {
     return URL.createObjectURL(uploadedFile.value);
   }
-  return formData.value.profile_photo || "/default-avatar.svg";
+  // Check if profile_photo exists and is not empty/whitespace
+  if (formData.value.profile_photo && formData.value.profile_photo.trim()) {
+    return formData.value.profile_photo;
+  }
+  return null; // Return null so we can show the SVG fallback instead
 });
 
 const formattedBirthDate = computed(() => {
@@ -299,7 +350,8 @@ const formattedBirthDate = computed(() => {
 
 const handleImageError = (event: Event) => {
   const target = event.target as HTMLImageElement;
-  target.src = "/default-avatar.svg";
+  // Hide the image container by setting the profile photo to empty
+  formData.value.profile_photo = "";
 };
 
 const triggerFileUpload = () => {
