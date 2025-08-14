@@ -1,65 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { authService } from "../services/authService";
 
-// Import pages
-import {
-  LoginPage,
-  DashboardPage,
-  NewsOverviewPage,
-  NewsDetailPage,
-} from "@/views";
+// Import route modules
+import { authRoutes, newsRoutes, dashboardRoutes, coreRoutes } from "./routes";
 
 const routes = [
-  {
-    path: "/login",
-    name: "Login",
-    component: LoginPage,
-    meta: {
-      layout: "AuthLayout",
-      requiresGuest: true, // Only accessible when not authenticated
-    },
-  },
-  {
-    path: "/dashboard",
-    name: "Dashboard",
-    component: DashboardPage,
-    meta: {
-      layout: "DefaultLayout",
-      requiresAuth: true, // Only accessible when authenticated
-    },
-  },
-  {
-    path: "/news",
-    name: "News",
-    component: NewsOverviewPage,
-    meta: {
-      layout: "DefaultLayout",
-      requiresAuth: true, // Only accessible when authenticated
-    },
-  },
-  {
-    path: "/news/:id",
-    name: "NewsDetail",
-    component: NewsDetailPage,
-    meta: {
-      layout: "DefaultLayout",
-      requiresAuth: true, // Only accessible when authenticated
-    },
-  },
-  {
-    path: "/",
-    redirect: () => {
-      // Redirect to dashboard if authenticated, otherwise to login
-      return authService.isAuthenticated() ? "/dashboard" : "/login";
-    },
-  },
-  {
-    path: "/:pathMatch(.*)*",
-    redirect: () => {
-      // Redirect to dashboard if authenticated, otherwise to login
-      return authService.isAuthenticated() ? "/dashboard" : "/login";
-    },
-  },
+  ...authRoutes,
+  ...newsRoutes,
+  ...dashboardRoutes,
+  ...coreRoutes,
 ];
 
 const router = createRouter({
