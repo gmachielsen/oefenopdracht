@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-white rounded-lg shadow">
+  <div class="bg-white min-h-screen md:min-h-0 md:rounded-lg md:shadow">
     <!-- Header with back button -->
-    <div class="px-6 py-4 border-b border-gray-200">
+    <div class="px-3 md:px-6 py-3 md:py-4 border-b border-gray-200">
       <button
         @click="goBack"
         class="inline-flex items-center text-indigo-600 hover:text-indigo-500 text-sm font-medium"
@@ -23,7 +23,7 @@
       </button>
     </div>
 
-    <div class="p-6">
+    <div class="p-3 md:p-6">
       <!-- Loading state -->
       <div v-if="isLoading" class="flex justify-center items-center py-12">
         <div
@@ -62,24 +62,26 @@
       </div>
 
       <!-- Article content -->
-      <article
-        v-else-if="article"
-        class="bg-white rounded-lg shadow-md overflow-hidden"
-      >
+      <article v-else-if="article" class="overflow-hidden">
         <!-- Hero image -->
-        <div v-if="article.image_url" class="aspect-w-16 aspect-h-9">
+        <div
+          v-if="article.image_url"
+          class="aspect-w-16 aspect-h-9 -mx-3 md:mx-0 md:rounded-lg overflow-hidden"
+        >
           <img
             :src="article.image_url"
             :alt="article.title"
-            class="w-full h-64 md:h-96 object-cover"
+            class="w-full h-48 md:h-64 lg:h-96 object-cover"
             @error="handleImageError($event)"
           />
         </div>
 
         <!-- Article header -->
-        <div class="p-6 md:p-8">
+        <div class="pt-3 md:pt-6 lg:pt-8">
           <!-- Date and metadata -->
-          <div class="flex items-center text-sm text-gray-500 mb-4">
+          <div
+            class="flex items-center text-xs md:text-sm text-gray-500 mb-3 md:mb-4"
+          >
             <svg
               class="w-4 h-4 mr-1"
               fill="none"
@@ -97,22 +99,26 @@
           </div>
 
           <!-- Title -->
-          <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h1
+            class="text-xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 md:mb-4 leading-tight"
+          >
             {{ article.title }}
           </h1>
 
           <!-- Description -->
-          <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+          <p
+            class="text-sm md:text-lg text-gray-600 mb-4 md:mb-6 leading-relaxed"
+          >
             {{ article.description }}
           </p>
 
           <!-- Divider -->
-          <hr class="my-8 border-gray-200" />
+          <hr class="my-6 md:my-8 border-gray-200" />
 
           <!-- Content -->
-          <div class="prose max-w-none">
+          <div class="prose prose-sm md:prose max-w-none text-sm md:text-base">
             <div
-              class="text-gray-800 leading-relaxed space-y-4"
+              class="text-gray-800 leading-relaxed space-y-3 md:space-y-4"
               v-html="formattedContent"
             ></div>
           </div>
@@ -120,14 +126,19 @@
       </article>
 
       <!-- Share buttons -->
-      <div v-if="article" class="mt-8 bg-white rounded-lg shadow-md p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">
+      <div
+        v-if="article"
+        class="mt-4 md:mt-8 pt-4 md:pt-6 border-t border-gray-200"
+      >
+        <h3 class="text-sm md:text-lg font-semibold text-gray-900 mb-3 md:mb-4">
           {{ $t("news.shareArticle") }}
         </h3>
-        <div class="flex space-x-4">
+        <div
+          class="flex flex-col space-y-2 md:flex-row md:space-y-0 md:space-x-4"
+        >
           <button
             @click="shareOnTwitter"
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-xs md:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 w-full md:w-auto"
           >
             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path
@@ -138,7 +149,7 @@
           </button>
           <button
             @click="shareOnLinkedIn"
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-xs md:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 w-full md:w-auto"
           >
             <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path
@@ -149,7 +160,7 @@
           </button>
           <button
             @click="copyLink"
-            class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+            class="inline-flex items-center justify-center px-3 py-2 border border-gray-300 rounded-md text-xs md:text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 w-full md:w-auto"
           >
             <svg
               class="w-4 h-4 mr-2"
