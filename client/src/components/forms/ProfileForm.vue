@@ -300,8 +300,8 @@ import {
   authService,
   type User,
   type UpdateProfileData,
-} from "../services/authService";
-import InputField from "./ui/InputField.vue";
+} from "../../services/authService";
+import InputField from "../ui/InputField.vue";
 
 const user = ref<User | null>(null);
 const isLoading = ref(false);

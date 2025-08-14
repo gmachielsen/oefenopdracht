@@ -205,7 +205,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
-import { authService, type User } from "../services/authService";
+import { authService, type User } from "../../../services/authService";
 
 const emit = defineEmits<{
   logout: [];

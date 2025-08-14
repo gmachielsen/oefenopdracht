@@ -189,7 +189,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import { newsService, type NewsArticle } from "../services/newsService";
+import { newsService, type NewsArticle } from "../../../services/newsService";
 
 const router = useRouter();
 const route = useRoute();

@@ -163,8 +163,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { newsService, type NewsArticle } from "../services/newsService";
-import { authService } from "../services/authService";
+import { newsService, type NewsArticle } from "../../../services/newsService";
+import { authService } from "../../../services/authService";
 
 const router = useRouter();
 
