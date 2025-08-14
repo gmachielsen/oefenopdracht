@@ -423,6 +423,9 @@ const handleSubmit = async () => {
     if (Object.keys(updateData).length > 0) {
       const updatedUser = await authService.updateProfile(updateData);
       user.value = updatedUser;
+
+      // Emit custom event to notify other components
+      window.dispatchEvent(new CustomEvent("profile-updated"));
     }
 
     successMessage.value = "Profiel succesvol bijgewerkt!"; // Auto-hide success message after 3 seconds

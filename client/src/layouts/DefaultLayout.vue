@@ -339,7 +339,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onMounted } from "vue";
+import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { authService, type User } from "../services/authService";
 
@@ -411,6 +411,23 @@ onMounted(async () => {
     if (!target.closest("[data-mobile-menu]")) {
       showMobileMenu.value = false;
     }
+  });
+
+  // Listen for profile updates
+  const handleProfileUpdate = async () => {
+    try {
+      user.value = await authService.getUser();
+    } catch (error) {
+      console.error("Failed to refresh user data:", error);
+    }
+  };
+
+  // Add event listener for profile updates
+  window.addEventListener("profile-updated", handleProfileUpdate);
+
+  // Cleanup on unmount
+  onUnmounted(() => {
+    window.removeEventListener("profile-updated", handleProfileUpdate);
   });
 });
 </script>
