@@ -9,7 +9,21 @@
     "email": "Email address",
     "password": "Password",
     "login": "Login",
-    "loginError": "Invalid credentials"
+    "loginError": "Invalid credentials",
+    "loginFailed": "Login failed",
+    "rememberMe": "Remember my credentials",
+    "forgotPassword": "Forgot password?",
+    "testCredentials": "Test with: test@golfspot.io / wachtwoord123",
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters"
+    },
+    "errors": {
+      "invalidCredentials": "Invalid email or password. Please check your credentials and try again.",
+      "genericError": "An error occurred. Please try again."
+    }
   },
   "news": {
     "title": "News",

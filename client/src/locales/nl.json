@@ -9,7 +9,21 @@
     "email": "E-mailadres",
     "password": "Wachtwoord",
     "login": "Inloggen",
-    "loginError": "Ongeldige inloggegevens"
+    "loginError": "Ongeldige inloggegevens",
+    "loginFailed": "Inloggen mislukt",
+    "rememberMe": "Onthoud mijn gegevens",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "testCredentials": "Test met: test@golfspot.io / wachtwoord123",
+    "validation": {
+      "emailRequired": "E-mail is verplicht",
+      "emailInvalid": "Voer een geldig e-mailadres in",
+      "passwordRequired": "Wachtwoord is verplicht",
+      "passwordMinLength": "Wachtwoord moet minimaal 6 tekens bevatten"
+    },
+    "errors": {
+      "invalidCredentials": "Ongeldige e-mail of wachtwoord. Controleer je gegevens en probeer opnieuw.",
+      "genericError": "Er is een fout opgetreden. Probeer het opnieuw."
+    }
   },
   "news": {
     "title": "Nieuws",

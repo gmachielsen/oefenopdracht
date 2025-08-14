@@ -54,7 +54,7 @@
                 class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
               />
               <label for="remember" class="ml-2 text-sm text-gray-600">
-                Onthoud mijn gegevens
+                {{ $t("auth.rememberMe") }}
               </label>
             </div>
             <div>
@@ -62,7 +62,7 @@
                 href="#"
                 class="text-sm text-gray-500 hover:text-purple-600 transition-colors"
               >
-                Wachtwoord vergeten?
+                {{ $t("auth.forgotPassword") }}
               </a>
             </div>
           </div>
@@ -89,7 +89,7 @@
               </div>
               <div class="ml-3">
                 <h3 class="text-sm font-medium text-red-800">
-                  Inloggen mislukt
+                  {{ $t("auth.loginFailed") }}
                 </h3>
                 <div class="mt-1 text-sm text-red-700">
                   <p>{{ errorMessage }}</p>
@@ -136,7 +136,7 @@
         <!-- Test credentials hint -->
         <div class="mt-6 text-center">
           <p class="text-xs text-gray-500">
-            Test met: test@golfspot.io / wachtwoord123
+            {{ $t("auth.testCredentials") }}
           </p>
         </div>
       </div>
@@ -146,8 +146,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { authService } from "../services/authService";
 import InputField from "./ui/InputField.vue";
+
+const { t } = useI18n();
 
 const emit = defineEmits<{
   loginSuccess: [];
@@ -171,18 +174,18 @@ const validateForm = () => {
   let isValid = true;
 
   if (!email.value) {
-    emailError.value = "Email is required";
+    emailError.value = t("auth.validation.emailRequired");
     isValid = false;
   } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-    emailError.value = "Please enter a valid email address";
+    emailError.value = t("auth.validation.emailInvalid");
     isValid = false;
   }
 
   if (!password.value) {
-    passwordError.value = "Password is required";
+    passwordError.value = t("auth.validation.passwordRequired");
     isValid = false;
   } else if (password.value.length < 6) {
-    passwordError.value = "Password must be at least 6 characters";
+    passwordError.value = t("auth.validation.passwordMinLength");
     isValid = false;
   }
 
@@ -204,11 +207,11 @@ const handleLogin = async () => {
     console.error("Login error:", error);
 
     if (error.response?.status === 401) {
-      errorMessage.value = "Invalid email or password";
+      errorMessage.value = t("auth.errors.invalidCredentials");
     } else if (error.response?.data?.message) {
       errorMessage.value = error.response.data.message;
     } else {
-      errorMessage.value = "An error occurred. Please try again.";
+      errorMessage.value = t("auth.errors.genericError");
     }
   } finally {
     isLoading.value = false;
