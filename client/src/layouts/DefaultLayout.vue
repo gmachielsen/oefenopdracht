@@ -251,7 +251,8 @@
                   <p class="text-xs text-gray-500">{{ user?.email }}</p>
                 </div>
                 <button
-                  @click="handleLogout"
+                  @click.stop="handleLogout"
+                  data-logout
                   class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
                   <svg
@@ -349,7 +350,8 @@
                     <p class="text-xs text-gray-500">{{ user?.email }}</p>
                   </div>
                   <button
-                    @click="handleLogout"
+                    @click.stop="handleLogout"
+                    data-logout
                     class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                   >
                     <svg
@@ -419,9 +421,20 @@ const pageTitle = computed(() => {
   }
 });
 
-const handleLogout = () => {
-  authService.logout();
-  router.push("/login");
+const handleLogout = async () => {
+  showDropdown.value = false;
+
+  try {
+    // First logout from the service
+    await authService.logout();
+
+    // Then navigate to login
+    await router.push("/login");
+  } catch (error) {
+    console.error("Logout error:", error);
+    // Force navigation even if logout fails
+    window.location.href = "/login";
+  }
 };
 
 const handleImageError = (event: Event) => {
@@ -456,12 +469,23 @@ onMounted(async () => {
     console.error("Failed to load user:", error);
   }
 
-  // Add click outside listener
+  // Add click outside listener with proper logout handling
   document.addEventListener("click", (event) => {
     const target = event.target as Element;
+
+    // Check if clicked element is a logout button or inside one
+    const isLogoutButton = target.closest("button[data-logout]");
+
+    if (isLogoutButton) {
+      // Don't close dropdown, let handleLogout handle it
+      return;
+    }
+
+    // Close dropdown if clicking outside relative container
     if (!target.closest(".relative")) {
       showDropdown.value = false;
     }
+
     // Close mobile menu when clicking outside
     if (!target.closest("[data-mobile-menu]")) {
       showMobileMenu.value = false;
