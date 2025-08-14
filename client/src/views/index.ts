@@ -1,7 +1,7 @@
 // Views barrel exports - organized by feature
 
 // Feature-based views
-export * from "./features/auth";
-export * from "./features/news";
-export * from "./features/dashboard";
-export * from "./features/profile";
+export * from "./auth";
+export * from "./news";
+export * from "./dashboard";
+export * from "./profile";

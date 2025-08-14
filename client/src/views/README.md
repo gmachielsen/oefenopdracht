@@ -8,16 +8,15 @@ De views (pagina's) zijn georganiseerd per feature om schaalbaarheid en onderhou
 
 ```
 src/views/
-├── features/          # Feature-gebaseerde pagina's
-│   ├── auth/         # Authenticatie pagina's
-│   │   └── LoginPage.vue
-│   ├── news/         # Nieuws pagina's
-│   │   ├── NewsOverviewPage.vue
-│   │   └── NewsDetailPage.vue
-│   ├── dashboard/    # Dashboard pagina's
-│   │   └── DashboardPage.vue
-│   └── profile/      # Profiel pagina's
-│       └── ProfilePage.vue
+├── auth/             # Authenticatie pagina's
+│   └── LoginPage.vue
+├── news/             # Nieuws pagina's
+│   ├── NewsOverviewPage.vue
+│   └── NewsDetailPage.vue
+├── dashboard/        # Dashboard pagina's
+│   └── DashboardPage.vue
+├── profile/          # Profiel pagina's
+│   └── ProfilePage.vue
 └── index.ts          # Barrel exports
 ```
 
