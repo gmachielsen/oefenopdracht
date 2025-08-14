@@ -1,23 +1,24 @@
 # Vue + Laravel Full-Stack Application
 
-Deze applicatie bestaat uit een Vue.js frontend (TypeScript) en een Laravel backend API.
+This application consists of a Vue.js frontend (TypeScript) and a Laravel backend API.
 
-## Project Structuur
+## Project Structure
 
 ```
 Oefenopdracht/
-├── client/          # Vue.js TypeScript applicatie
+├── client/          # Vue.js TypeScript application
 └── server/          # Laravel API
 ```
 
-## Setup & Installatie
+## Setup & Installation
 
-### Vereisten
+### Requirements
 
 - Node.js (v18+)
 - PHP (v8.1+)
 - Composer
 - pnpm
+- MySQL database
 
 ### Client (Vue.js) Setup
 
@@ -27,23 +28,36 @@ pnpm install
 pnpm dev
 ```
 
-De client draait op: http://localhost:5174
+The client runs on: http://localhost:5174
 
 ### Server (Laravel) Setup
 
 ```bash
 cd server
 composer install
+cp .env.example .env
+php artisan key:generate
+```
+
+Configure your database settings in `.env` file, then run:
+
+```bash
+php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-De API draait op: http://localhost:8001
+The API runs on: http://localhost:8001
+
+**Important:** You must seed the database to create a test user for login testing:
+
+- Email: `test@golfspot.io`
+- Password: `wachtwoord123`
 
 ## Development
 
-### Beide servers tegelijk starten
+### Starting both servers simultaneously
 
-Van de root directory:
+From the root directory:
 
 ```bash
 # Terminal 1 - Laravel API
@@ -55,49 +69,84 @@ cd client && pnpm dev
 
 ### API Endpoints
 
-- `GET /api/test` - Test API verbinding
-- `GET /api/examples` - Alle voorbeelden ophalen
-- `POST /api/examples` - Nieuw voorbeeld aanmaken
-- `GET /api/examples/{id}` - Specifiek voorbeeld ophalen
-- `PUT /api/examples/{id}` - Voorbeeld bijwerken
-- `DELETE /api/examples/{id}` - Voorbeeld verwijderen
+#### Authentication
+
+- `POST /api/login` - User authentication
+- `POST /api/logout` - User logout
+- `POST /api/refresh` - Refresh JWT token
+- `GET /api/user` - Get authenticated user profile
+- `PUT /api/user` - Update user profile
+
+#### News
+
+- `GET /api/news` - Get all news articles
+- `GET /api/news/{id}` - Get specific news article
 
 ### Frontend Features
 
-- TypeScript ondersteuning
-- Axios voor API calls
-- Reactieve data binding
+- TypeScript support
+- Vue 3 with Composition API
+- Tailwind CSS for styling
+- Axios for API calls
+- JWT authentication
+- Reactive data binding
 - Error handling
-- CORS configuratie
+- Multi-language support (i18n)
+- Profile photo upload functionality
+- Responsive design
 
 ### Backend Features
 
 - Laravel 11
+- JWT Authentication
 - API Resource Controllers
-- CORS ondersteuning
-- SQLite database (standaard)
-- Laravel Sanctum voor authenticatie
-- Request validatie
+- CORS support
+- MySQL database
+- Database migrations and seeders
+- Profile management
+- Image upload handling (base64)
+- Request validation
 
-## Configuratie
+## Database Seeding
+
+The application includes seeders for testing:
+
+```bash
+# Seed test user and sample data
+php artisan db:seed
+
+# Or seed specific seeders
+php artisan db:seed --class=TestUserSeeder
+php artisan db:seed --class=NewsSeeder
+```
+
+### Test Credentials
+
+After seeding, you can login with:
+
+- **Email:** test@golfspot.io
+- **Password:** wachtwoord123
+
+## Configuration
 
 ### CORS
 
-De Laravel API is geconfigureerd om requests van `localhost:5174` toe te staan.
+The Laravel API is configured to accept requests from `localhost:5174`.
 
 ### Database
 
-Standaard gebruikt de applicatie SQLite. De database wordt automatisch aangemaakt bij de eerste migratie.
+The application uses MySQL. Configure your database connection in the `.env` file.
 
 ### Environment Variables
 
-Bekijk de `.env` bestanden in beide projecten voor configuratie opties.
+Check the `.env` files in both projects for configuration options.
 
-## Productie
+## Production
 
-Voor productie deployment:
+For production deployment:
 
-1. Build de Vue.js client: `cd client && pnpm build`
-2. Configureer Laravel voor productie environment
-3. Stel database verbinding in
-4. Configureer webserver (Nginx/Apache)
+1. Build the Vue.js client: `cd client && pnpm build`
+2. Configure Laravel for production environment
+3. Set up database connection
+4. Configure web server (Nginx/Apache)
+5. Set proper JWT secrets and API keys
