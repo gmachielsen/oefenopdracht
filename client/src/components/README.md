@@ -1,148 +1,83 @@
-# Components Architecture
+# Shared UI Components
 
-## Nieuwe Schaalbare Mappenstructuur
+Deze folder bevat **herbruikbare UI building blocks** die door meerdere features gebruikt kunnen worden.
 
-Deze mappenstructuur is ontworpen voor schaalbaarheid en voorkomt wildgroei van componenten.
-
-### 📁 Structuur Overzicht
+## 📁 Structuur
 
 ```
-src/components/
-├── features/          # Feature-gebaseerde componenten
-│   ├── auth/         # Authenticatie gerelateerde componenten
-│   ├── news/         # Nieuws gerelateerde componenten
-│   └── dashboard/    # Dashboard gerelateerde componenten
-├── forms/            # Herbruikbare formulieren
-├── ui/               # Basis UI componenten (buttons, inputs, etc.)
-└── index.ts          # Barrel exports voor gemakkelijke imports
+components/
+└── ui/                      # Shared UI components
+    ├── InputField.vue       # Herbruikbare input component
+    └── index.ts             # UI exports
 ```
 
-### 🎯 Principes
+## 🎯 Doel
 
-#### 1. **Feature-based Organisatie**
+De `/components/ui/` folder bevat **alleen** componenten die:
 
-- Componenten worden gegroepeerd per business functionaliteit
-- Elke feature map heeft eigen index.ts voor exports
-- Gemakkelijk te vinden en onderhouden
+- ✅ Volledig herbruikbaar zijn tussen alle features
+- ✅ Geen feature-specifieke business logica bevatten
+- ✅ Puur UI/styling gericht zijn
+- ✅ Als building blocks dienen voor complexere componenten
 
-#### 2. **Component Type Organisatie**
+## 📋 Wanneer Gebruik Je Deze Folder?
 
-- `ui/` - Basis UI componenten (Button, Input, Modal, etc.)
-- `forms/` - Specifieke formulieren die herbruikbaar zijn
-- `layouts/` - Layout componenten (blijft in eigen map)
+### ✅ Wel hier plaatsen:
 
-#### 3. **Barrel Exports**
+- Basis UI elementen (buttons, inputs, modals)
+- Styling-focused componenten
+- Generic building blocks
+- Componenten zonder business context
 
-- Elke map heeft een index.ts bestand
-- Vereenvoudigt imports: `import { LoginForm } from '@/components'`
-- Centraal beheer van exports
+### ❌ Niet hier plaatsen:
 
-### 📝 Naming Conventions
+- Feature-specifieke componenten
+- Components met business logica
+- Forms die aan specifieke features gekoppeld zijn
+- Components die maar door één feature gebruikt worden
 
-#### Feature Componenten
-
-- **Naam**: Beschrijft functionaliteit
-- **Locatie**: `features/{feature-name}/ComponentName.vue`
-- **Voorbeeld**: `features/auth/LoginForm.vue`
-
-#### UI Componenten
-
-- **Naam**: Generieke beschrijving
-- **Locatie**: `ui/ComponentName.vue`
-- **Voorbeeld**: `ui/Button.vue`, `ui/InputField.vue`
-
-#### Form Componenten
-
-- **Naam**: Eindigt met 'Form'
-- **Locatie**: `forms/EntityForm.vue`
-- **Voorbeeld**: `forms/ProfileForm.vue`, `forms/ContactForm.vue`
-
-### 🔄 Import Patterns
-
-#### Oude manier (vermijden):
+## 🔄 Import Patronen
 
 ```typescript
-import LoginForm from "../components/LoginForm.vue";
-import ProfileForm from "../components/ProfileForm.vue";
-import InputField from "../components/ui/InputField.vue";
+// Voor shared UI components
+import InputField from "@/components/ui/InputField.vue";
+
+// Of via barrel export
+import { InputField } from "@/components/ui";
 ```
 
-#### Nieuwe manier (aanbevolen):
+## 💡 Architectuur Context
 
-```typescript
-import { LoginForm, ProfileForm, InputField } from "@/components";
-```
+Deze folder is onderdeel van een **co-locatie architectuur**. Voor feature-specifieke componenten, zie:
 
-Of specifiek per feature:
+- `/views/{feature}/components/` - Feature-specifieke componenten
+- `/client/README.md` - Volledige architectuur documentatie
 
-```typescript
-import { LoginForm } from "@/components/features/auth";
-import { ProfileForm } from "@/components/forms";
-```
+## 🚀 Toekomstige Uitbreidingen
 
-### 🚀 Schaalbaarheid Voordelen
-
-1. **Duidelijke Scheiding**: Elke component heeft een logische plek
-2. **Gemakkelijk Zoeken**: Feature-based organisatie
-3. **Herbruikbaarheid**: UI componenten zijn duidelijk gescheiden
-4. **Onderhoudbaarheid**: Gerelateerde componenten bij elkaar
-5. **Team Samenwerking**: Duidelijke eigendom per feature
-
-### 📋 Wanneer Gebruik Je Welke Map?
-
-#### `features/{feature}/`
-
-- Componenten specifiek voor één business functionaliteit
-- Componenten die business logica bevatten
-- Componenten die niet herbruikbaar zijn buiten de feature
-
-#### `ui/`
-
-- Basis UI building blocks
-- Styling focused componenten
-- Volledig herbruikbare componenten
-- Geen business logica
-
-#### `forms/`
-
-- Complexe formulieren met validation
-- Herbruikbare formulieren
-- Formulieren met eigen state management
-
-### 🔧 Toekomstige Uitbreidingen
-
-Wanneer de applicatie groeit:
+Wanneer deze folder groeit, organiseer in submappen:
 
 ```
-features/
-├── auth/
-├── news/
-├── dashboard/
-├── users/           # Nieuwe feature
-├── analytics/       # Nieuwe feature
-├── settings/        # Nieuwe feature
-└── notifications/   # Nieuwe feature
-
-ui/
+components/ui/
 ├── buttons/
 │   ├── Button.vue
 │   ├── IconButton.vue
 │   └── LoadingButton.vue
-├── inputs/
-├── modals/
-└── navigation/
-
-forms/
-├── ProfileForm.vue
-├── ContactForm.vue
-├── NewsletterForm.vue
-└── FeedbackForm.vue
+├── forms/
+│   ├── InputField.vue       # Bestaand
+│   ├── TextArea.vue
+│   └── Select.vue
+└── feedback/
+    ├── Toast.vue
+    └── Modal.vue
 ```
 
-### 💡 Best Practices
+## 📝 Guidelines
 
-1. **Een component per feature**: Houdt componenten feature-specifiek
-2. **Maximaal 10 componenten per map**: Split op bij groei
-3. **Descriptieve namen**: Maak duidelijk wat het component doet
-4. **Consistent gebruik van index.ts**: Voor alle mappen
-5. **Documenteer nieuwe patterns**: Update deze README bij wijzigingen
+1. **Herbruikbaarheid**: Component moet door minimaal 2+ features gebruikt worden
+2. **Geen Business Logic**: Puur presentationeel
+3. **Props Interface**: Duidelijke, generieke props
+4. **Consistent Naming**: Beschrijvende, generieke namen
+5. **TypeScript**: Alle componenten hebben TypeScript interfaces
+
+Voor meer details over de volledige frontend architectuur, zie `/client/README.md`.
