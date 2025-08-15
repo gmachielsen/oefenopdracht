@@ -3,5 +3,5 @@
 </template>
 
 <script setup lang="ts">
-import NewsDetail from "../../components/features/news/NewsDetail.vue";
+import NewsDetail from "./components/NewsDetail.vue";
 </script>
