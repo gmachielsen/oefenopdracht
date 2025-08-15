@@ -116,8 +116,8 @@ const emit = defineEmits<{
   loginSuccess: [];
 }>();
 
-const email = ref("");
-const password = ref("");
+const email = ref("test@golfspot.io");
+const password = ref("wachtwoord123");
 const isLoading = ref(false);
 const errorMessage = ref("");
 const showErrorAlert = ref(false);
