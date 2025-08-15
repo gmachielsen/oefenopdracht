@@ -28,7 +28,7 @@ pnpm install
 pnpm dev
 ```
 
-The client runs on: http://localhost:5174
+The client runs on: http://localhost:5173
 
 ### Server (Laravel) Setup
 
@@ -46,7 +46,7 @@ php artisan migrate:fresh --seed
 php artisan serve
 ```
 
-The API runs on: http://localhost:8001
+The API runs on: http://localhost:8000
 
 **Important:** You must seed the database to create a test user for login testing:
 
@@ -192,7 +192,7 @@ The authentication tests cover:
 
 ### CORS
 
-The Laravel API is configured to accept requests from `localhost:5174`.
+The Laravel API is configured to accept requests from `localhost:5173`.
 
 ### Database
 
