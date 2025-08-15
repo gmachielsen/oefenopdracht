@@ -26,32 +26,6 @@ class NewsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): JsonResponse
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'content' => 'required|string',
-            'image_url' => 'nullable|url',
-            'is_published' => 'boolean',
-            'published_at' => 'nullable|date',
-        ]);
-
-        if (!isset($validated['published_at']) && ($validated['is_published'] ?? true)) {
-            $validated['published_at'] = now();
-        }
-
-        $news = News::create($validated);
-
-        return response()->json([
-            'success' => true,
-            'data' => $news
-        ], 201);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id): JsonResponse
@@ -61,44 +35,6 @@ class NewsController extends Controller
         return response()->json([
             'success' => true,
             'data' => $news
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id): JsonResponse
-    {
-        $news = News::findOrFail($id);
-
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'content' => 'sometimes|required|string',
-            'image_url' => 'nullable|url',
-            'is_published' => 'boolean',
-            'published_at' => 'nullable|date',
-        ]);
-
-        $news->update($validated);
-
-        return response()->json([
-            'success' => true,
-            'data' => $news
-        ]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id): JsonResponse
-    {
-        $news = News::findOrFail($id);
-        $news->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'News deleted successfully'
         ]);
     }
 }

@@ -4,9 +4,6 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\News;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
 
 class NewsTest extends TestCase
@@ -124,429 +121,106 @@ class NewsTest extends TestCase
         $response->assertStatus(404);
     }
 
-    public function test_authenticated_admin_can_create_news_article()
+    public function test_news_list_only_shows_published_articles()
     {
-        // Create and authenticate user
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $newsData = [
-            'title' => 'New Article',
-            'description' => 'Article description',
-            'content' => 'Full article content',
-            'image_url' => 'https://example.com/new-image.jpg',
+        // Create mix of published and unpublished articles
+        News::create([
+            'title' => 'Published Article 1',
+            'description' => 'This is published',
+            'content' => 'Published content 1',
             'is_published' => true,
-        ];
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', $newsData);
-
-        $response->assertStatus(201)
-                ->assertJsonStructure([
-                    'success',
-                    'data' => [
-                        'id',
-                        'title',
-                        'description',
-                        'content',
-                        'image_url',
-                        'is_published',
-                        'published_at',
-                        'created_at',
-                        'updated_at'
-                    ]
-                ])
-                ->assertJsonPath('success', true)
-                ->assertJsonPath('data.title', 'New Article')
-                ->assertJsonPath('data.description', 'Article description')
-                ->assertJsonPath('data.content', 'Full article content')
-                ->assertJsonPath('data.image_url', 'https://example.com/new-image.jpg')
-                ->assertJsonPath('data.is_published', true);
-
-        // Verify the article was created in the database
-        $this->assertDatabaseHas('news', [
-            'title' => 'New Article',
-            'description' => 'Article description',
-            'content' => 'Full article content',
-            'image_url' => 'https://example.com/new-image.jpg',
-            'is_published' => true,
-        ]);
-    }
-
-    public function test_authenticated_admin_can_create_unpublished_news_article()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
+            'published_at' => now()->subHours(2),
         ]);
 
-        $token = JWTAuth::fromUser($user);
-
-        $newsData = [
-            'title' => 'Draft Article',
-            'description' => 'Draft description',
-            'content' => 'Draft content',
-            'is_published' => false,
-        ];
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', $newsData);
-
-        $response->assertStatus(201)
-                ->assertJsonPath('data.is_published', false)
-                ->assertJsonPath('data.published_at', null);
-
-        $this->assertDatabaseHas('news', [
-            'title' => 'Draft Article',
+        News::create([
+            'title' => 'Unpublished Article',
+            'description' => 'This is not published',
+            'content' => 'Unpublished content',
             'is_published' => false,
         ]);
+
+        News::create([
+            'title' => 'Published Article 2',
+            'description' => 'This is also published',
+            'content' => 'Published content 2',
+            'is_published' => true,
+            'published_at' => now()->subHours(1),
+        ]);
+
+        $response = $this->getJson('/api/news');
+
+        $response->assertStatus(200);
+        
+        $articles = $response->json('data');
+        $this->assertCount(2, $articles);
+        
+        // Verify only published articles are returned
+        foreach ($articles as $article) {
+            $this->assertNotEquals('Unpublished Article', $article['title']);
+        }
+        
+        // Verify correct order (newest first)
+        $this->assertEquals('Published Article 2', $articles[0]['title']);
+        $this->assertEquals('Published Article 1', $articles[1]['title']);
     }
 
-    public function test_unauthenticated_user_cannot_create_news_article()
+    public function test_news_list_returns_correct_fields()
     {
-        $newsData = [
-            'title' => 'Unauthorized Article',
-            'description' => 'Should not be created',
-            'content' => 'Unauthorized content',
-        ];
-
-        $response = $this->postJson('/api/news', $newsData);
-
-        $response->assertStatus(401)
-                ->assertJson([
-                    'message' => 'Unauthenticated.'
-                ]);
-    }
-
-    public function test_news_creation_validation_requires_title()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', [
-            'description' => 'Description without title',
-            'content' => 'Content without title',
-        ]);
-
-        $response->assertStatus(422)
-                ->assertJsonValidationErrors(['title']);
-    }
-
-    public function test_news_creation_validation_requires_description()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', [
-            'title' => 'Title without description',
-            'content' => 'Content without description',
-        ]);
-
-        $response->assertStatus(422)
-                ->assertJsonValidationErrors(['description']);
-    }
-
-    public function test_news_creation_validation_requires_content()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', [
-            'title' => 'Title without content',
-            'description' => 'Description without content',
-        ]);
-
-        $response->assertStatus(422)
-                ->assertJsonValidationErrors(['content']);
-    }
-
-    public function test_news_creation_validation_image_url_must_be_valid_url()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', [
+        News::create([
             'title' => 'Test Article',
             'description' => 'Test description',
-            'content' => 'Test content',
-            'image_url' => 'not-a-valid-url',
-        ]);
-
-        $response->assertStatus(422)
-                ->assertJsonValidationErrors(['image_url']);
-    }
-
-    public function test_authenticated_admin_can_update_news_article()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $news = News::create([
-            'title' => 'Original Title',
-            'description' => 'Original description',
-            'content' => 'Original content',
-            'is_published' => false,
-        ]);
-
-        $updateData = [
-            'title' => 'Updated Title',
-            'description' => 'Updated description',
-            'content' => 'Updated content',
+            'content' => 'Test content that should not appear in list',
+            'image_url' => 'https://example.com/test.jpg',
             'is_published' => true,
-        ];
+            'published_at' => now(),
+        ]);
 
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->putJson("/api/news/{$news->id}", $updateData);
+        $response = $this->getJson('/api/news');
 
-        $response->assertStatus(200)
-                ->assertJsonPath('success', true)
-                ->assertJsonPath('data.title', 'Updated Title')
-                ->assertJsonPath('data.description', 'Updated description')
-                ->assertJsonPath('data.content', 'Updated content')
-                ->assertJsonPath('data.is_published', true);
+        $response->assertStatus(200);
+        
+        $article = $response->json('data')[0];
+        
+        // Should include these fields
+        $this->assertArrayHasKey('id', $article);
+        $this->assertArrayHasKey('title', $article);
+        $this->assertArrayHasKey('description', $article);
+        $this->assertArrayHasKey('image_url', $article);
+        $this->assertArrayHasKey('published_at', $article);
+        $this->assertArrayHasKey('created_at', $article);
+        
+        // Should NOT include content in list view
+        $this->assertArrayNotHasKey('content', $article);
+    }
 
-        $this->assertDatabaseHas('news', [
-            'id' => $news->id,
-            'title' => 'Updated Title',
-            'description' => 'Updated description',
-            'content' => 'Updated content',
+    public function test_news_detail_returns_all_fields()
+    {
+        $news = News::create([
+            'title' => 'Detailed Article',
+            'description' => 'Detailed description',
+            'content' => 'This is the full content that should appear in detail view',
+            'image_url' => 'https://example.com/detail.jpg',
             'is_published' => true,
-        ]);
-    }
-
-    public function test_authenticated_admin_can_partially_update_news_article()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
+            'published_at' => now(),
         ]);
 
-        $token = JWTAuth::fromUser($user);
+        $response = $this->getJson("/api/news/{$news->id}");
 
-        $news = News::create([
-            'title' => 'Original Title',
-            'description' => 'Original description',
-            'content' => 'Original content',
-            'is_published' => false,
-        ]);
-
-        // Only update the title
-        $updateData = [
-            'title' => 'Only Title Updated',
-        ];
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->putJson("/api/news/{$news->id}", $updateData);
-
-        $response->assertStatus(200)
-                ->assertJsonPath('data.title', 'Only Title Updated')
-                ->assertJsonPath('data.description', 'Original description')
-                ->assertJsonPath('data.content', 'Original content');
-    }
-
-    public function test_unauthenticated_user_cannot_update_news_article()
-    {
-        $news = News::create([
-            'title' => 'Test Article',
-            'description' => 'Test description',
-            'content' => 'Test content',
-        ]);
-
-        $response = $this->putJson("/api/news/{$news->id}", [
-            'title' => 'Updated Title',
-        ]);
-
-        $response->assertStatus(401)
-                ->assertJson([
-                    'message' => 'Unauthenticated.'
-                ]);
-    }
-
-    public function test_authenticated_admin_can_delete_news_article()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $news = News::create([
-            'title' => 'Article to Delete',
-            'description' => 'This will be deleted',
-            'content' => 'Delete this content',
-        ]);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->deleteJson("/api/news/{$news->id}");
-
-        $response->assertStatus(200)
-                ->assertJsonPath('success', true)
-                ->assertJsonPath('message', 'News deleted successfully');
-
-        $this->assertDatabaseMissing('news', [
-            'id' => $news->id,
-        ]);
-    }
-
-    public function test_unauthenticated_user_cannot_delete_news_article()
-    {
-        $news = News::create([
-            'title' => 'Protected Article',
-            'description' => 'Should not be deleted',
-            'content' => 'Protected content',
-        ]);
-
-        $response = $this->deleteJson("/api/news/{$news->id}");
-
-        $response->assertStatus(401)
-                ->assertJson([
-                    'message' => 'Unauthenticated.'
-                ]);
-
-        // Verify article still exists
-        $this->assertDatabaseHas('news', [
-            'id' => $news->id,
-            'title' => 'Protected Article',
-        ]);
-    }
-
-    public function test_returns_404_when_updating_nonexistent_news_article()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->putJson('/api/news/999999', [
-            'title' => 'Updated Title',
-        ]);
-
-        $response->assertStatus(404);
-    }
-
-    public function test_returns_404_when_deleting_nonexistent_news_article()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->deleteJson('/api/news/999999');
-
-        $response->assertStatus(404);
-    }
-
-    public function test_published_at_is_set_automatically_when_publishing()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', [
-            'title' => 'Auto Published Article',
-            'description' => 'Auto published description',
-            'content' => 'Auto published content',
-            'is_published' => true,
-        ]);
-
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         
         $article = $response->json('data');
-        $this->assertNotNull($article['published_at']);
         
-        // Verify published_at is recent (within last minute)
-        $publishedAt = Carbon::parse($article['published_at']);
-        $this->assertTrue($publishedAt->diffInMinutes(now()) < 1);
-    }
-
-    public function test_can_set_custom_published_at_date()
-    {
-        $user = User::create([
-            'email' => 'admin@golfspot.io',
-            'password' => Hash::make('wachtwoord123'),
-            'email_verified_at' => now(),
-        ]);
-
-        $token = JWTAuth::fromUser($user);
-
-        $customDate = '2024-01-15 10:30:00';
-
-        $response = $this->withHeaders([
-            'Authorization' => 'Bearer ' . $token,
-        ])->postJson('/api/news', [
-            'title' => 'Custom Date Article',
-            'description' => 'Custom date description',
-            'content' => 'Custom date content',
-            'is_published' => true,
-            'published_at' => $customDate,
-        ]);
-
-        $response->assertStatus(201);
+        // Should include all fields including content
+        $this->assertArrayHasKey('id', $article);
+        $this->assertArrayHasKey('title', $article);
+        $this->assertArrayHasKey('description', $article);
+        $this->assertArrayHasKey('content', $article);
+        $this->assertArrayHasKey('image_url', $article);
+        $this->assertArrayHasKey('is_published', $article);
+        $this->assertArrayHasKey('published_at', $article);
+        $this->assertArrayHasKey('created_at', $article);
+        $this->assertArrayHasKey('updated_at', $article);
         
-        $article = $response->json('data');
-        $this->assertStringStartsWith('2024-01-15', $article['published_at']);
+        $this->assertEquals('This is the full content that should appear in detail view', $article['content']);
     }
 }
