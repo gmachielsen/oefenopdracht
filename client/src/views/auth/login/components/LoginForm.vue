@@ -51,7 +51,7 @@
               <input
                 id="remember"
                 type="checkbox"
-                class="h-4 w-4 text-brand-purple-600 focus:ring-brand-purple-500 border-gray-300 rounded"
+                class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
               />
               <label for="remember" class="ml-2 text-sm text-gray-600">
                 {{ $t("auth.rememberMe") }}
@@ -60,7 +60,7 @@
             <div>
               <a
                 href="#"
-                class="text-sm text-gray-500 hover:text-brand-purple-600 transition-colors"
+                class="text-sm text-gray-500 hover:text-primary-600 transition-colors"
               >
                 {{ $t("auth.forgotPassword") }}
               </a>
