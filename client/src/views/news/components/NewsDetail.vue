@@ -1,13 +1,14 @@
 <template>
-  <div class="bg-white min-h-screen md:min-h-0 md:rounded-lg md:shadow">
+  <div class="bg-white min-h-screen md:min-h-0 md:rounded-lg">
     <!-- Header with back button -->
-    <div class="px-3 md:px-6 py-3 md:py-4 border-b border-gray-200">
+    <div class="px-3 md:px-6 pt-4 pb-2 flex items-center">
       <button
         @click="goBack"
-        class="inline-flex items-center text-indigo-600 hover:text-indigo-500 text-sm font-medium"
+        class="inline-flex items-center text-indigo-600 hover:text-indigo-500 text-base font-medium px-2 py-2 rounded transition-colors focus:outline-none"
+        style="background: none; box-shadow: none;"
       >
         <svg
-          class="w-4 h-4 mr-1"
+          class="w-5 h-5 mr-2"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -34,7 +35,7 @@
       <!-- Error state -->
       <div
         v-else-if="error"
-        class="bg-red-50 border border-red-200 rounded-md p-4"
+        class="bg-red-50 p-4 rounded-md"
       >
         <div class="flex">
           <div class="flex-shrink-0">
@@ -128,7 +129,7 @@
       <!-- Share buttons -->
       <div
         v-if="article"
-        class="mt-4 md:mt-8 pt-4 md:pt-6 border-t border-gray-200"
+        class="mt-4 md:mt-8 pt-4 md:pt-6"
       >
         <h3 class="text-sm md:text-lg font-semibold text-gray-900 mb-3 md:mb-4">
           {{ $t("news.shareArticle") }}
