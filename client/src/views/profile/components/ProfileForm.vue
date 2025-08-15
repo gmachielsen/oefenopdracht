@@ -6,53 +6,23 @@
       </h3>
 
       <!-- Success/Error Messages -->
-      <div v-if="successMessage" class="mb-4 rounded-md bg-green-50 p-4">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg
-              class="h-5 w-5 text-green-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-green-800">
-              {{ successMessage }}
-            </p>
-          </div>
-        </div>
-      </div>
+      <Alert
+        v-if="successMessage"
+        type="success"
+        :message="successMessage"
+        :auto-hide="true"
+        :auto-hide-delay="3000"
+        v-model="showSuccessAlert"
+      />
 
-      <div v-if="errorMessage" class="mb-4 rounded-md bg-red-50 p-4">
-        <div class="flex">
-          <div class="flex-shrink-0">
-            <svg
-              class="h-5 w-5 text-red-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </div>
-          <div class="ml-3">
-            <p class="text-sm font-medium text-red-800">
-              {{ errorMessage }}
-            </p>
-          </div>
-        </div>
-      </div>
+      <Alert
+        v-if="errorMessage"
+        type="error"
+        :message="errorMessage"
+        dismissible
+        v-model="showErrorAlert"
+        @dismiss="clearErrorMessage"
+      />
 
       <form @submit.prevent="handleSubmit" class="space-y-6">
         <!-- Profile Photo -->
@@ -302,12 +272,15 @@ import {
   type UpdateProfileData,
 } from "../../../services/authService";
 import InputField from "../../../components/ui/InputField.vue";
+import { Alert } from "../../../components/ui";
 
 const user = ref<User | null>(null);
 const isLoading = ref(false);
 const isUploading = ref(false);
 const successMessage = ref("");
 const errorMessage = ref("");
+const showSuccessAlert = ref(false);
+const showErrorAlert = ref(false);
 const uploadedFile = ref<File | null>(null);
 const fileInput = ref<HTMLInputElement | null>(null);
 
@@ -375,12 +348,14 @@ const handleFileUpload = async (event: Event) => {
   // Validate file type
   if (!file.type.startsWith("image/")) {
     errorMessage.value = "Alleen afbeeldingsbestanden zijn toegestaan";
+    showErrorAlert.value = true;
     return;
   }
 
   // Validate file size (max 5MB)
   if (file.size > 5 * 1024 * 1024) {
     errorMessage.value = "Bestand is te groot. Maximum grootte is 5MB";
+    showErrorAlert.value = true;
     return;
   }
 
@@ -391,6 +366,13 @@ const handleFileUpload = async (event: Event) => {
 const clearMessages = () => {
   successMessage.value = "";
   errorMessage.value = "";
+  showSuccessAlert.value = false;
+  showErrorAlert.value = false;
+};
+
+const clearErrorMessage = () => {
+  errorMessage.value = "";
+  showErrorAlert.value = false;
 };
 
 const resetForm = () => {
@@ -439,6 +421,7 @@ const handleSubmit = async () => {
       } catch (uploadError) {
         console.error("File upload error:", uploadError);
         errorMessage.value = "Fout bij het converteren van de foto";
+        showErrorAlert.value = true;
         return;
       } finally {
         isUploading.value = false;
@@ -469,6 +452,7 @@ const handleSubmit = async () => {
 
     if (Object.keys(updateData).length === 0 && !uploadedFile.value) {
       errorMessage.value = "Geen wijzigingen gedetecteerd";
+      showErrorAlert.value = true;
       return;
     }
 
@@ -480,9 +464,12 @@ const handleSubmit = async () => {
       window.dispatchEvent(new CustomEvent("profile-updated"));
     }
 
-    successMessage.value = "Profiel succesvol bijgewerkt!"; // Auto-hide success message after 3 seconds
+    successMessage.value = "Profiel succesvol bijgewerkt!";
+    showSuccessAlert.value = true;
+    // Auto-hide success message after 3 seconds
     setTimeout(() => {
       successMessage.value = "";
+      showSuccessAlert.value = false;
     }, 3000);
   } catch (error: any) {
     console.error("Profile update error:", error);
@@ -497,6 +484,7 @@ const handleSubmit = async () => {
       errorMessage.value =
         "Er is een fout opgetreden bij het bijwerken van je profiel";
     }
+    showErrorAlert.value = true;
   } finally {
     isLoading.value = false;
   }
