@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import ProfileForm from "../../components/forms/ProfileForm.vue";
+import ProfileForm from "../profile/components/ProfileForm.vue";
 </script>
