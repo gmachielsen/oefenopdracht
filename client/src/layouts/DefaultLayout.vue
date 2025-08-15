@@ -27,56 +27,19 @@
       <!-- Navigation Menu -->
       <nav class="mt-6 px-3">
         <div class="space-y-1">
-          <!-- Nieuws -->
           <router-link
-            to="/news"
+            v-for="item in navItems"
+            :key="item.to"
+            :to="item.to"
             class="group flex items-center px-3 py-2 text-sm font-medium rounded-md"
             :class="
-              $route.path.startsWith('/news')
+              item.active($route.path)
                 ? 'bg-gray-100 text-gray-900'
                 : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             "
           >
-            <svg
-              class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-              />
-            </svg>
-            {{ t("nav.news") }}
-          </router-link>
-
-          <!-- Profiel -->
-          <router-link
-            to="/dashboard"
-            class="group flex items-center px-3 py-2 text-sm font-medium rounded-md"
-            :class="
-              $route.path === '/dashboard'
-                ? 'bg-gray-100 text-gray-900'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-            "
-          >
-            <svg
-              class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-            {{ t("nav.profile") }}
+            <component :is="item.icon" />
+            {{ item.label }}
           </router-link>
         </div>
       </nav>
@@ -142,58 +105,20 @@
       <!-- Mobile Navigation Menu -->
       <nav class="mt-6 px-3">
         <div class="space-y-1">
-          <!-- Nieuws -->
           <router-link
-            to="/news"
-            @click="toggleMobileMenu"
+            v-for="item in mobileNavItems"
+            :key="item.to"
+            :to="item.to"
+            @click="item.onClick"
             class="group flex items-center px-3 py-2 text-sm font-medium rounded-md"
             :class="
-              $route.path.startsWith('/news')
+              item.active($route.path)
                 ? 'bg-gray-100 text-gray-900'
                 : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
             "
           >
-            <svg
-              class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"
-              />
-            </svg>
-            {{ t("nav.news") }}
-          </router-link>
-
-          <!-- Profiel -->
-          <router-link
-            to="/profile"
-            @click="toggleMobileMenu"
-            class="group flex items-center px-3 py-2 text-sm font-medium rounded-md"
-            :class="
-              $route.path === '/profile'
-                ? 'bg-gray-100 text-gray-900'
-                : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-            "
-          >
-            <svg
-              class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-              />
-            </svg>
-            {{ t("nav.profile") }}
+            <component :is="item.icon" />
+            {{ item.label }}
           </router-link>
         </div>
       </nav>
@@ -393,6 +318,8 @@ import { computed, ref, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { authService, type User } from "../services/authService";
+import NewsIcon from "../components/icons/NewsIcon.vue";
+import ProfileIcon from "../components/icons/ProfileIcon.vue";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -401,6 +328,40 @@ const router = useRouter();
 const user = ref<User | null>(null);
 const showDropdown = ref(false);
 const showMobileMenu = ref(false);
+
+const navItems = [
+  {
+    to: "/news",
+    label: t("nav.news"),
+    icon: NewsIcon,
+    active: (path: string) => path.startsWith("/news"),
+  },
+  {
+    to: "/dashboard",
+    label: t("nav.profile"),
+    icon: ProfileIcon,
+    active: (path: string) => path === "/dashboard",
+  },
+  // Voeg hier eenvoudig nieuwe items toe
+];
+
+const mobileNavItems = [
+  {
+    to: "/news",
+    label: t("nav.news"),
+    icon: NewsIcon,
+    active: navItems[0].active,
+    onClick: () => toggleMobileMenu(),
+  },
+  {
+    to: "/profile",
+    label: t("nav.profile"),
+    icon: ProfileIcon,
+    active: (path: string) => path === "/profile",
+    onClick: () => toggleMobileMenu(),
+  },
+  // Voeg hier eenvoudig nieuwe items toe
+];
 
 const fullName = computed(() => {
   if (user.value?.first_name && user.value?.last_name) {
@@ -455,6 +416,62 @@ const toggleDropdown = () => {
 };
 
 const toggleMobileMenu = () => {
+  showMobileMenu.value = !showMobileMenu.value;
+};
+
+// Listen for profile updates
+const handleProfileUpdate = async () => {
+  try {
+    user.value = await authService.getUser();
+  } catch (error) {
+    console.error("Failed to refresh user data:", error);
+  }
+};
+
+// Close dropdown when clicking outside
+onMounted(async () => {
+  try {
+    user.value = await authService.getUser();
+  } catch (error) {
+    console.error("Failed to load user:", error);
+  }
+
+  // Add click outside listener with proper logout handling
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element;
+
+    // Check if clicked element is a logout button or inside one
+    const isLogoutButton = target.closest("button[data-logout]");
+
+    if (isLogoutButton) {
+      // Don't close dropdown, let handleLogout handle it
+      return;
+    }
+
+    // Close dropdown if clicking outside relative container
+    if (!target.closest(".relative")) {
+      showDropdown.value = false;
+    }
+
+    // Close mobile menu when clicking outside
+    if (!target.closest("[data-mobile-menu]")) {
+      showMobileMenu.value = false;
+    }
+  });
+
+  // Add event listener for profile updates
+  window.addEventListener("profile-updated", handleProfileUpdate);
+});
+
+// Cleanup on unmount
+onUnmounted(() => {
+  window.removeEventListener("profile-updated", handleProfileUpdate);
+});
+</script>
+
+<style scoped>
+/* Custom styles if needed */
+</style>
   showMobileMenu.value = !showMobileMenu.value;
 };
 

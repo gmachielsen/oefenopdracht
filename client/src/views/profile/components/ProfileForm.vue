@@ -126,7 +126,7 @@
             </div>
             <div v-if="isUploading" class="flex items-center space-x-2">
               <svg
-                class="animate-spin h-4 w-4 text-indigo-500"
+                class="animate-spin h-4 w-4 text-primary-500"
                 fill="none"
                 viewBox="0 0 24 24"
               >
