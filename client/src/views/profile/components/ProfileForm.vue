@@ -31,7 +31,7 @@
             <!-- When there is a profile photo -->
             <div
               v-if="profileImageSrc"
-              class="h-20 w-20 rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors overflow-hidden relative group"
+              class="h-20 w-20 rounded-full border-2 border-gray-300 cursor-pointer hover:border-primary-500 transition-colors overflow-hidden relative group"
               @click="triggerFileUpload"
             >
               <img
@@ -68,7 +68,7 @@
             <!-- When there is no profile photo (fallback) -->
             <div
               v-else
-              class="h-20 w-20 rounded-full border-2 border-gray-300 cursor-pointer hover:border-indigo-500 transition-colors bg-gray-200 flex items-center justify-center relative group"
+              class="h-20 w-20 rounded-full border-2 border-gray-300 cursor-pointer hover:border-primary-500 transition-colors bg-gray-200 flex items-center justify-center relative group"
               @click="triggerFileUpload"
             >
               <svg

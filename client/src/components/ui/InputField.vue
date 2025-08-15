@@ -72,7 +72,7 @@ const inputClasses = computed(() => {
     ? "border-red-300 focus:ring-red-500 focus:border-red-500"
     : props.variant === "login"
     ? "border-gray-300 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-    : "border-gray-300 focus:ring-indigo-500 focus:border-indigo-500";
+    : "border-gray-300 focus:ring-primary-500 focus:border-primary-500";
 
   return `${baseClasses} ${variantClasses} ${stateClasses} ${
     props.inputClass || ""

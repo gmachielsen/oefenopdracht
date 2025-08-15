@@ -4,8 +4,8 @@
     <div class="px-3 md:px-6 pt-4 pb-2 flex items-center">
       <button
         @click="goBack"
-        class="inline-flex items-center text-indigo-600 hover:text-indigo-500 text-base font-medium px-2 py-2 rounded transition-colors focus:outline-none"
-        style="background: none; box-shadow: none;"
+        class="inline-flex items-center text-primary-600 hover:text-primary-500 text-base font-medium px-2 py-2 rounded transition-colors focus:outline-none"
+        style="background: none; box-shadow: none"
       >
         <svg
           class="w-5 h-5 mr-2"
@@ -28,15 +28,12 @@
       <!-- Loading state -->
       <div v-if="isLoading" class="flex justify-center items-center py-12">
         <div
-          class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"
+          class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"
         ></div>
       </div>
 
       <!-- Error state -->
-      <div
-        v-else-if="error"
-        class="bg-red-50 p-4 rounded-md"
-      >
+      <div v-else-if="error" class="bg-red-50 p-4 rounded-md">
         <div class="flex">
           <div class="flex-shrink-0">
             <svg
@@ -127,10 +124,7 @@
       </article>
 
       <!-- Share buttons -->
-      <div
-        v-if="article"
-        class="mt-4 md:mt-8 pt-4 md:pt-6"
-      >
+      <div v-if="article" class="mt-4 md:mt-8 pt-4 md:pt-6">
         <h3 class="text-sm md:text-lg font-semibold text-gray-900 mb-3 md:mb-4">
           {{ $t("news.shareArticle") }}
         </h3>
