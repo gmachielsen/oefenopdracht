@@ -13,8 +13,6 @@ src/views/
 ├── news/             # Nieuws pagina's
 │   ├── NewsOverviewPage.vue
 │   └── NewsDetailPage.vue
-├── dashboard/        # Dashboard pagina's
-│   └── DashboardPage.vue
 ├── profile/          # Profiel pagina's
 │   └── ProfilePage.vue
 └── index.ts          # Barrel exports
@@ -46,7 +44,7 @@ src/views/
 
 ```typescript
 import LoginPage from "@/views/LoginPage.vue";
-import DashboardPage from "@/views/DashboardPage.vue";
+import ProfilePage from "@/views/ProfilePage.vue";
 // etc...
 ```
 
@@ -55,9 +53,9 @@ import DashboardPage from "@/views/DashboardPage.vue";
 ```typescript
 import {
   LoginPage,
-  DashboardPage,
   NewsOverviewPage,
   NewsDetailPage,
+  ProfilePage,
 } from "@/views";
 ```
 
@@ -73,13 +71,13 @@ import {
 #### Nieuwe View Toevoegen:
 
 1. Bepaal de juiste feature categorie
-2. Plaats in `features/{feature}/NewPage.vue`
-3. Update `features/{feature}/index.ts`
+2. Plaats in `views/{feature}/NewPage.vue`
+3. Update `views/{feature}/index.ts`
 4. Naam eindigt altijd met 'Page'
 
 #### Nieuwe Feature:
 
-1. Maak `features/{new-feature}/` folder
+1. Maak `views/{new-feature}/` folder
 2. Voeg pagina's toe aan de folder
 3. Maak `index.ts` met exports
 4. Update hoofdindex `/views/index.ts`
@@ -87,10 +85,9 @@ import {
 ### 🔧 Toekomstige Uitbreidingen
 
 ```
-features/
+views/
 ├── auth/
 ├── news/
-├── dashboard/
 ├── profile/
 ├── users/           # Nieuwe feature
 │   ├── UsersListPage.vue
@@ -112,3 +109,6 @@ features/
 2. **Feature cohesie**: Gerelateerde views bij elkaar
 3. **Descriptieve namen**: Maak duidelijk wat de pagina doet
 4. **Consistent gebruik van exports**: Voor alle features
+5. **Feature cohesie**: Gerelateerde views bij elkaar
+6. **Descriptieve namen**: Maak duidelijk wat de pagina doet
+7. **Consistent gebruik van exports**: Voor alle features

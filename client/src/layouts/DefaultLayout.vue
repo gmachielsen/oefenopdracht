@@ -329,7 +329,7 @@ const user = ref<User | null>(null);
 const showDropdown = ref(false);
 const showMobileMenu = ref(false);
 
-const navItems = [
+const navItems = computed(() => [
   {
     to: "/news",
     label: t("nav.news"),
@@ -337,20 +337,20 @@ const navItems = [
     active: (path: string) => path.startsWith("/news"),
   },
   {
-    to: "/dashboard",
+    to: "/profile",
     label: t("nav.profile"),
     icon: ProfileIcon,
-    active: (path: string) => path === "/dashboard",
+    active: (path: string) => path === "/profile",
   },
   // Voeg hier eenvoudig nieuwe items toe
-];
+]);
 
-const mobileNavItems = [
+const mobileNavItems = computed(() => [
   {
     to: "/news",
     label: t("nav.news"),
     icon: NewsIcon,
-    active: navItems[0].active,
+    active: navItems.value[0].active,
     onClick: () => toggleMobileMenu(),
   },
   {
@@ -361,7 +361,7 @@ const mobileNavItems = [
     onClick: () => toggleMobileMenu(),
   },
   // Voeg hier eenvoudig nieuwe items toe
-];
+]);
 
 const fullName = computed(() => {
   if (user.value?.first_name && user.value?.last_name) {
@@ -384,7 +384,7 @@ const pageTitle = computed(() => {
       if (route.path.startsWith("/news/")) {
         return t("pages.newsDetail");
       }
-      return t("pages.dashboard");
+      return t("pages.profile");
   }
 });
 

@@ -11,7 +11,7 @@ src/router/
 ├── routes/           # Route module definities
 │   ├── auth.ts       # Authenticatie routes (/login)
 │   ├── news.ts       # Nieuws routes (/news, /news/:id)
-│   ├── dashboard.ts  # Dashboard routes (/dashboard)
+│   ├── profile.ts    # Profiel routes (/profile)
 │   ├── core.ts       # Core routes (/, 404)
 │   └── index.ts      # Barrel exports
 ├── index.ts          # Hoofdrouter configuratie
@@ -75,20 +75,20 @@ export const featureRoutes: RouteRecordRaw[] = [
 
 ### 🔄 Huidige Routes
 
-#### Auth Routes (`/router/features/auth.ts`)
+#### Auth Routes (`/router/routes/auth.ts`)
 
 - `/login` - Login pagina (alleen voor gasten)
 
-#### News Routes (`/router/features/news.ts`)
+#### News Routes (`/router/routes/news.ts`)
 
 - `/news` - Nieuws overzicht
 - `/news/:id` - Nieuws detail pagina
 
-#### Dashboard Routes (`/router/features/dashboard.ts`)
+#### Profile Routes (`/router/routes/profile.ts`)
 
-- `/dashboard` - Hoofddashboard
+- `/profile` - Profiel pagina
 
-#### Core Routes (`/router/features/core.ts`)
+#### Core Routes (`/router/routes/core.ts`)
 
 - `/` - Root redirect
 - `/*` - 404 fallback
@@ -98,10 +98,10 @@ export const featureRoutes: RouteRecordRaw[] = [
 Bij groei van de applicatie:
 
 ```
-router/features/
+router/routes/
 ├── auth.ts           # Bestaand
 ├── news.ts           # Bestaand
-├── dashboard.ts      # Bestaand
+├── profile.ts        # Bestaand
 ├── users.ts          # Nieuwe feature
 ├── analytics.ts      # Nieuwe feature
 ├── settings.ts       # Nieuwe feature
@@ -136,7 +136,7 @@ meta: {
   title: 'Page Title',         // SEO friendly
   breadcrumb: {                // Navigation aid
     label: 'Users',
-    parent: 'Dashboard'
+    parent: 'Profile'
   }
 }
 ```
@@ -228,7 +228,7 @@ meta: {
   title: 'User Management',
   breadcrumb: {
     label: 'Users',
-    parent: 'Dashboard'
+    parent: 'Profile'
   },
   permissions: ['users.read'],
 }

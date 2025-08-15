@@ -2,13 +2,11 @@
   "nav": {
     "news": "Nieuws",
     "profile": "Profiel",
-    "dashboard": "Dashboard",
     "logout": "Uitloggen",
     "welcome": "Welkom",
     "user": "Gebruiker"
   },
   "pages": {
-    "dashboard": "Dashboard",
     "profile": "Profiel",
     "news": "Nieuws",
     "newsDetail": "Nieuws Detail"

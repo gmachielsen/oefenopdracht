@@ -1,5 +1,5 @@
 // Feature route exports
-export { authRoutes } from "./auth";
-export { newsRoutes } from "./news";
-export { dashboardRoutes } from "./dashboard";
-export { coreRoutes } from "./core";
+export * from "./auth";
+export * from "./news";
+export * from "./profile";
+export * from "./core";

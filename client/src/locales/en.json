@@ -2,13 +2,11 @@
   "nav": {
     "news": "News",
     "profile": "Profile",
-    "dashboard": "Dashboard",
     "logout": "Logout",
     "welcome": "Welcome",
     "user": "User"
   },
   "pages": {
-    "dashboard": "Dashboard",
     "profile": "Profile",
     "news": "News",
     "newsDetail": "News Detail"

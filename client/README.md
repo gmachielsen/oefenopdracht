@@ -28,8 +28,6 @@ src/
 │   │   ├── ProfilePage.vue      # Profiel pagina
 │   │   └── components/
 │   │       └── ProfileForm.vue  # Profiel form component
-│   └── dashboard/
-│       └── DashboardPage.vue    # Dashboard pagina
 └── services/                    # Shared services
     ├── authService.ts
     ├── newsService.ts
@@ -67,7 +65,7 @@ src/
 
 - **UI Components**: Generieke naam (`InputField.vue`, `Button.vue`)
 - **Feature Components**: Specifieke naam (`LoginForm.vue`, `NewsOverview.vue`)
-- **Page Components**: Eindigt met `Page` (`DashboardPage.vue`)
+- **Page Components**: Eindigt met `Page` (`ProfilePage.vue`)
 
 ### 🔄 Import Patterns
 
@@ -307,7 +305,6 @@ Wanneer de applicatie groeit:
 features/
 ├── auth/
 ├── news/
-├── dashboard/
 ├── users/           # Nieuwe feature
 ├── analytics/       # Nieuwe feature
 ├── settings/        # Nieuwe feature

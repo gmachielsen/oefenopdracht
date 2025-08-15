@@ -5,15 +5,15 @@ export const coreRoutes: RouteRecordRaw[] = [
   {
     path: "/",
     redirect: () => {
-      // Redirect to dashboard if authenticated, otherwise to login
-      return authService.isAuthenticated() ? "/dashboard" : "/login";
+      // Redirect to profile if authenticated, otherwise to login
+      return authService.isAuthenticated() ? "/profile" : "/login";
     },
   },
   {
     path: "/:pathMatch(.*)*",
     redirect: () => {
-      // Redirect to dashboard if authenticated, otherwise to login
-      return authService.isAuthenticated() ? "/dashboard" : "/login";
+      // Redirect to profile if authenticated, otherwise to login
+      return authService.isAuthenticated() ? "/profile" : "/login";
     },
   },
 ];

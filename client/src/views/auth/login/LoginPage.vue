@@ -11,7 +11,7 @@ import LoginForm from "./components/LoginForm.vue";
 const router = useRouter();
 
 const handleLoginSuccess = () => {
-  // Navigate to dashboard after successful login
-  router.push("/dashboard");
+  // Navigate to profile after successful login
+  router.push("/profile");
 };
 </script>
