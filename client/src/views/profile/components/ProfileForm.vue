@@ -190,7 +190,7 @@
 
         <!-- Submit Button -->
         <div class="flex justify-end space-x-3">
-          <Button type="button" variant="secondary" @click="resetForm">
+          <Button type="button" variant="neutral" @click="resetForm">
             {{ $t("profile.buttons.reset") }}
           </Button>
           <Button

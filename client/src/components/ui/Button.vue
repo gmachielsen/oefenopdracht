@@ -38,7 +38,7 @@ import { computed } from "vue";
 
 export interface ButtonProps {
   type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary" | "danger" | "ghost";
+  variant?: "primary" | "secondary" | "neutral" | "danger" | "ghost";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
   disabled?: boolean;
@@ -72,11 +72,14 @@ const baseClasses =
 const variantClasses = computed(() => {
   const variants = {
     primary:
-      "text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500",
+      "text-white bg-brand-purple-600 hover:bg-brand-purple-700 focus:ring-brand-purple-500",
     secondary:
-      "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-indigo-500",
+      "text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500",
+    neutral:
+      "text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:ring-primary-500",
     danger: "text-white bg-red-600 hover:bg-red-700 focus:ring-red-500",
-    ghost: "text-gray-700 bg-transparent hover:bg-gray-100 focus:ring-gray-500",
+    ghost:
+      "text-gray-700 bg-transparent hover:bg-gray-100 focus:ring-primary-500",
   };
   return variants[props.variant];
 });
@@ -106,7 +109,8 @@ const buttonClasses = computed(() => {
 const loadingIconClasses = computed(() => {
   const iconColors = {
     primary: "text-white",
-    secondary: "text-gray-700",
+    secondary: "text-white",
+    neutral: "text-gray-700",
     danger: "text-white",
     ghost: "text-gray-700",
   };
