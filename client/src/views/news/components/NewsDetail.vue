@@ -189,10 +189,12 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { newsService, type NewsArticle } from "../../../services/newsService";
 
 const router = useRouter();
 const route = useRoute();
+const { t } = useI18n();
 
 const article = ref<NewsArticle | null>(null);
 const isLoading = ref(true);
@@ -259,13 +261,13 @@ onMounted(async () => {
     const articleId = parseInt(route.params.id as string);
 
     if (isNaN(articleId)) {
-      error.value = "Ongeldig artikel ID.";
+      error.value = t("news.invalidId");
       return;
     }
 
     article.value = await newsService.getNewsById(articleId);
   } catch (err) {
-    error.value = "Er is een fout opgetreden bij het laden van het artikel.";
+    error.value = t("news.loadArticleError");
     console.error("Error loading article:", err);
   } finally {
     isLoading.value = false;

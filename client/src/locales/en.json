@@ -14,16 +14,16 @@
     "newsDetail": "News Detail"
   },
   "brand": {
-    "name": "Golfclub"
+    "name": "Golf Club"
   },
   "auth": {
-    "welcome": "Welcome to Golfclub",
+    "welcome": "Welcome to Golf Club",
     "email": "Email address",
     "password": "Password",
     "login": "Login",
     "loginError": "Invalid credentials",
     "loginFailed": "Login failed",
-    "rememberMe": "Remember my credentials",
+    "rememberMe": "Remember me",
     "forgotPassword": "Forgot password?",
     "validation": {
       "emailRequired": "Email is required",
@@ -33,7 +33,10 @@
     },
     "errors": {
       "invalidCredentials": "Invalid email or password. Please check your credentials and try again.",
-      "genericError": "An error occurred. Please try again."
+      "genericError": "An error occurred. Please try again.",
+      "databaseConnection": "Database connection error. Check if the database service is running.",
+      "serverError": "Server error. Please try again later.",
+      "networkError": "Cannot connect to server. Check if the backend is running on http://localhost:8000"
     }
   },
   "news": {
@@ -45,25 +48,28 @@
     "backToOverview": "Back to overview",
     "shareArticle": "Share article",
     "copyLink": "Copy link",
-    "linkCopied": "Link copied to clipboard!"
+    "linkCopied": "Link copied to clipboard!",
+    "loadError": "An error occurred while loading the news.",
+    "loadArticleError": "An error occurred while loading the article.",
+    "invalidId": "Invalid article ID."
   },
   "profile": {
     "title": "Profile Information",
     "currentInfo": "Current Profile Information",
     "photo": {
-      "label": "Profile Photo",
+      "label": "Profile photo",
       "clickToUpload": "Click on the avatar to upload a new photo"
     },
     "fields": {
-      "firstName": "First Name",
-      "lastName": "Last Name",
-      "email": "Email Address",
-      "birthDate": "Birth Date",
-      "fullName": "Full Name"
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email address",
+      "birthDate": "Birth date",
+      "fullName": "Full name"
     },
     "placeholders": {
-      "firstName": "First Name",
-      "lastName": "Last Name",
+      "firstName": "First name",
+      "lastName": "Last name",
       "email": "your.email.address"
     },
     "buttons": {
@@ -81,7 +87,7 @@
       "uploading": "Uploading photo..."
     },
     "info": {
-      "notFilled": "Not filled in",
+      "notFilled": "Not filled",
       "accountId": "Account ID"
     }
   },
@@ -89,5 +95,14 @@
     "loading": "Loading...",
     "error": "Error",
     "success": "Success"
+  },
+  "errors": {
+    "network": "Network error. Check your internet connection.",
+    "unauthorized": "You are not authorized for this action.",
+    "forbidden": "You don't have access to this resource.",
+    "notFound": "The requested resource was not found.",
+    "validation": "Validation errors occurred.",
+    "server": "A server error occurred.",
+    "generic": "An unexpected error occurred."
   }
 }

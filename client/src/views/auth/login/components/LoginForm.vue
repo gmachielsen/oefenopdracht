@@ -175,10 +175,22 @@ const handleLogin = async () => {
   } catch (error: any) {
     console.error("Login error:", error);
 
-    if (error.response?.status === 401) {
+    if (error.response?.status === 500) {
+      const serverError = error.response?.data?.message || "";
+      if (
+        serverError.includes("Connection refused") ||
+        serverError.includes("SQLSTATE")
+      ) {
+        errorMessage.value = t("auth.errors.databaseConnection");
+      } else {
+        errorMessage.value = t("auth.errors.serverError");
+      }
+    } else if (error.response?.status === 401) {
       errorMessage.value = t("auth.errors.invalidCredentials");
     } else if (error.response?.data?.message) {
       errorMessage.value = error.response.data.message;
+    } else if (error.code === "ERR_NETWORK") {
+      errorMessage.value = t("auth.errors.networkError");
     } else {
       errorMessage.value = t("auth.errors.genericError");
     }

@@ -33,7 +33,10 @@
     },
     "errors": {
       "invalidCredentials": "Ongeldige e-mail of wachtwoord. Controleer je gegevens en probeer opnieuw.",
-      "genericError": "Er is een fout opgetreden. Probeer het opnieuw."
+      "genericError": "Er is een fout opgetreden. Probeer het opnieuw.",
+      "databaseConnection": "Database verbindingsfout. Controleer of de database service draait.",
+      "serverError": "Server fout. Probeer het later opnieuw.",
+      "networkError": "Kan geen verbinding maken met de server. Controleer of de backend draait op http://localhost:8000"
     }
   },
   "news": {
@@ -45,7 +48,10 @@
     "backToOverview": "Terug naar overzicht",
     "shareArticle": "Artikel delen",
     "copyLink": "Link kopiëren",
-    "linkCopied": "Link gekopieerd naar klembord!"
+    "linkCopied": "Link gekopieerd naar klembord!",
+    "loadError": "Er is een fout opgetreden bij het laden van het nieuws.",
+    "loadArticleError": "Er is een fout opgetreden bij het laden van het artikel.",
+    "invalidId": "Ongeldig artikel ID."
   },
   "profile": {
     "title": "Profiel Gegevens",
@@ -89,5 +95,14 @@
     "loading": "Laden...",
     "error": "Fout",
     "success": "Succes"
+  },
+  "errors": {
+    "network": "Netwerkfout. Controleer je internetverbinding.",
+    "unauthorized": "Je bent niet geautoriseerd voor deze actie.",
+    "forbidden": "Je hebt geen toegang tot deze resource.",
+    "notFound": "De gevraagde resource is niet gevonden.",
+    "validation": "Er zijn validatiefouten opgetreden.",
+    "server": "Er is een serverfout opgetreden.",
+    "generic": "Er is een onverwachte fout opgetreden."
   }
 }

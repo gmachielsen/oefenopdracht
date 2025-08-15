@@ -210,27 +210,35 @@
   <div class="mt-8 bg-white shadow rounded-lg">
     <div class="px-4 py-5 sm:p-6">
       <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
-        Huidige Profiel Informatie
+        {{ $t("profile.currentInfo") }}
       </h3>
       <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
         <div>
-          <dt class="text-sm font-medium text-gray-500">Volledige naam</dt>
+          <dt class="text-sm font-medium text-gray-500">
+            {{ $t("profile.fields.fullName") }}
+          </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            {{ fullName || "Niet ingevuld" }}
+            {{ fullName || $t("profile.info.notFilled") }}
           </dd>
         </div>
         <div>
-          <dt class="text-sm font-medium text-gray-500">E-mail</dt>
+          <dt class="text-sm font-medium text-gray-500">
+            {{ $t("profile.fields.email") }}
+          </dt>
           <dd class="mt-1 text-sm text-gray-900">{{ user?.email }}</dd>
         </div>
         <div>
-          <dt class="text-sm font-medium text-gray-500">Geboortedatum</dt>
+          <dt class="text-sm font-medium text-gray-500">
+            {{ $t("profile.fields.birthDate") }}
+          </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            {{ formattedBirthDate || "Niet ingevuld" }}
+            {{ formattedBirthDate || $t("profile.info.notFilled") }}
           </dd>
         </div>
         <div>
-          <dt class="text-sm font-medium text-gray-500">Account ID</dt>
+          <dt class="text-sm font-medium text-gray-500">
+            {{ $t("profile.info.accountId") }}
+          </dt>
           <dd class="mt-1 text-sm text-gray-900">{{ user?.id }}</dd>
         </div>
       </dl>
@@ -240,6 +248,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
+import { useI18n } from "vue-i18n";
 import {
   authService,
   type User,
@@ -247,6 +256,8 @@ import {
 } from "../../../services/authService";
 import InputField from "../../../components/ui/InputField.vue";
 import { Alert, Button } from "../../../components/ui";
+
+const { t } = useI18n();
 
 const user = ref<User | null>(null);
 const isLoading = ref(false);
@@ -321,14 +332,14 @@ const handleFileUpload = async (event: Event) => {
 
   // Validate file type
   if (!file.type.startsWith("image/")) {
-    errorMessage.value = "Alleen afbeeldingsbestanden zijn toegestaan";
+    errorMessage.value = t("profile.messages.invalidFileType");
     showErrorAlert.value = true;
     return;
   }
 
   // Validate file size (max 5MB)
   if (file.size > 5 * 1024 * 1024) {
-    errorMessage.value = "Bestand is te groot. Maximum grootte is 5MB";
+    errorMessage.value = t("profile.messages.fileTooLarge");
     showErrorAlert.value = true;
     return;
   }
@@ -394,7 +405,7 @@ const handleSubmit = async () => {
         uploadedFile.value = null; // Clear the uploaded file
       } catch (uploadError) {
         console.error("File upload error:", uploadError);
-        errorMessage.value = "Fout bij het converteren van de foto";
+        errorMessage.value = t("profile.messages.photoConvertError");
         showErrorAlert.value = true;
         return;
       } finally {
@@ -425,7 +436,7 @@ const handleSubmit = async () => {
     }
 
     if (Object.keys(updateData).length === 0 && !uploadedFile.value) {
-      errorMessage.value = "Geen wijzigingen gedetecteerd";
+      errorMessage.value = t("profile.messages.noChanges");
       showErrorAlert.value = true;
       return;
     }
@@ -438,7 +449,7 @@ const handleSubmit = async () => {
       window.dispatchEvent(new CustomEvent("profile-updated"));
     }
 
-    successMessage.value = "Profiel succesvol bijgewerkt!";
+    successMessage.value = t("profile.messages.updateSuccess");
     showSuccessAlert.value = true;
     // Auto-hide success message after 3 seconds
     setTimeout(() => {
@@ -455,8 +466,7 @@ const handleSubmit = async () => {
     } else if (error.response?.data?.message) {
       errorMessage.value = error.response.data.message;
     } else {
-      errorMessage.value =
-        "Er is een fout opgetreden bij het bijwerken van je profiel";
+      errorMessage.value = t("profile.messages.updateError");
     }
     showErrorAlert.value = true;
   } finally {

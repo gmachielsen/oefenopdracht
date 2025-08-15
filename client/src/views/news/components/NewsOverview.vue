@@ -163,10 +163,12 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import { newsService, type NewsArticle } from "../../../services/newsService";
 import { authService } from "../../../services/authService";
 
 const router = useRouter();
+const { t } = useI18n();
 
 const news = ref<NewsArticle[]>([]);
 const isLoading = ref(true);
@@ -209,7 +211,7 @@ onMounted(async () => {
     isLoading.value = true;
     news.value = await newsService.getNews();
   } catch (err) {
-    error.value = "Er is een fout opgetreden bij het laden van het nieuws.";
+    error.value = t("news.loadError");
     console.error("Error loading news:", err);
   } finally {
     isLoading.value = false;
