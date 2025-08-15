@@ -145,7 +145,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { authService } from "../../../../services/authService";
 import InputField from "../../../../components/ui/InputField.vue";
@@ -163,9 +163,7 @@ const errorMessage = ref("");
 const emailError = ref("");
 const passwordError = ref("");
 
-const testCredentialsText = computed(() => {
-  return t("auth.testCredentials").replace("{at}", "@");
-});
+const testCredentialsText = "Test met: test@golfspot.io / wachtwoord123";
 
 const clearErrors = () => {
   errorMessage.value = "";

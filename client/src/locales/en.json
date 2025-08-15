@@ -25,7 +25,6 @@
     "loginFailed": "Login failed",
     "rememberMe": "Remember my credentials",
     "forgotPassword": "Forgot password?",
-    "testCredentials": "Test with: test{at}golfspot.io / wachtwoord123",
     "validation": {
       "emailRequired": "Email is required",
       "emailInvalid": "Please enter a valid email address",

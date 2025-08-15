@@ -25,7 +25,6 @@
     "loginFailed": "Inloggen mislukt",
     "rememberMe": "Onthoud mijn gegevens",
     "forgotPassword": "Wachtwoord vergeten?",
-    "testCredentials": "Test met: test{at}golfspot.io / wachtwoord123",
     "validation": {
       "emailRequired": "E-mail is verplicht",
       "emailInvalid": "Voer een geldig e-mailadres in",
